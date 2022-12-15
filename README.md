@@ -8,6 +8,8 @@ On va devoir se concentrer avant tout sur  :
  - La jouabilité du jeu (affichage, indications, guidage)
  - Fonctionnalités secondaires (Sauvegarde sur fichier texte, Allegro ?)
 
+! Annexes : https://boostcamp.omneseducation.com/course/view.php?id=249881&section=3#tabs-tree-start
+
 
 # Contenu du dossier à rendre le 08/01/2023 : 
 ## Le code avec tous les dossiers et fichiers nécessaires (démo de ce code en 15 min max à la soutenance) :
