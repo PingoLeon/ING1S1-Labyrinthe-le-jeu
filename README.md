@@ -31,7 +31,7 @@ Remarque : Dans vos appels de fopen, ne précisez aucun chemin de répertoire (s
 - Sources précises : web avec tous les liens détaillés, noms des algorithmes utilisés, livres, supports de cours en citant les auteurs (1 slide) avec une dizaine de sources.
 
 
-!!! NO PLAGIAT!!!
+#!!! NO PLAGIAT!!!
 Chaque code source sera comparé à tous les autres (Paris et Lyon) via un outil spécialisé dans la détection de plagiat de code.  Est considéré comme plagiat toute copie ou tout échange de code entre étudiants ne faisant pas partie de la même équipe.  Si l’échange de code est consentant entre le copieur et le copié, ça sera la même sanction entre les deux parties concernées.
 
 En cas de plagiat avéré, la note de 0/20 sera attribuée à tous les membres des deux groupes concernés, qui seront convoqués en Conseil de Discipline afin de décider d'une punition et de statuer sur leur exclusion de l'école. Tout plagiat sera sévèrement sanctionné par 0 et un avertissement. 
