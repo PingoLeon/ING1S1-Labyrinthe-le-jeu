@@ -8,7 +8,7 @@ On va devoir se concentrer avant tout sur  :
  - La jouabilité du jeu (affichage, indications, guidage)
  - Fonctionnalités secondaires (Sauvegarde sur fichier texte, Allegro ?)
 
-! Annexes : https://boostcamp.omneseducation.com/course/view.php?id=249881&section=3#tabs-tree-start
+Annexes : https://boostcamp.omneseducation.com/course/view.php?id=249881&section=3#tabs-tree-start
 
 
 # Contenu du dossier à rendre le 08/01/2023 : 
