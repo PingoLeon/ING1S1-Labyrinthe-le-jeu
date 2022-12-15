@@ -9,13 +9,13 @@ On va devoir se concentrer avant tout sur  :
  - Fonctionnalités secondaires (Sauvegarde sur fichier texte, Allegro ?)
 
 
-## Contenu du dossier à rendre le 08/01/2023 : 
-# Le code avec tous les dossiers et fichiers nécessaires (démo de ce code en 15 min max à la soutenance) :
+# Contenu du dossier à rendre le 08/01/2023 : 
+## Le code avec tous les dossiers et fichiers nécessaires (démo de ce code en 15 min max à la soutenance) :
  - Tous les dossiers et fichiers de votre projet développés dans le répertoire de travail de CodeBlocks (fichiers headers .h, fichiers sources .c, projet .cbp, exécutable .exe etc.), et tout autre fichier que vous jugez nécessaire au bon fonctionnement de votre programme (par exemple, fichier(s) de sauvegarde au format .txt).
 Remarque : Dans vos appels de fopen, ne précisez aucun chemin de répertoire (sauf s'il est dans un dossier du répertoire de travail de CodeBlocks) pour que vos fichiers .txt soient considérés locaux à l'exécutable.
 - Citez vos sources (exemples : extraits de code récupérés de cette page campus, sites web consultés etc.) en commentaires en début de vos fichiers sources .c
 
-# Un PowerPoint (ou Prezi ou Keynote) au format pdf avec les slides suivants (5 min max à la soutenance) :
+## Un PowerPoint (ou Prezi ou Keynote) au format pdf avec les slides suivants (5 min max à la soutenance) :
 - Page de garde avec titre, noms coéquipiers et groupe de TD (1 slide)
 - Sommaire (1 slide)
 - Présentation synthétique et originale sans copier/coller du sujet (vidéo autorisée de 30 secondes max) (1 slide)
