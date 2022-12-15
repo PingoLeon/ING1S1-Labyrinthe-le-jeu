@@ -1,0 +1,36 @@
+
+#include <stdio.h>
+#include <stdlib.h> 
+
+
+void menu()
+{
+    int choix;
+    printf(" 1 - Nouvelle Partie");
+    printf(" 2 - Sauvegarde");
+    printf(" 3 - Charger une partie");
+    printf(" 4 - Afficher les règles / crédits");
+    printf(" 5 - Quitter");
+    scanf("%d", &choix);
+    switch(choix)
+    {
+        case 1:
+            printf("Nouvelle Partie");
+            break;
+        case 2:
+            printf("Sauvegarde");
+            break;
+        case 3:
+            printf("Charger une partie");
+            break;
+        case 4:
+            printf("Afficher les règles / crédits");
+            break;
+        case 5:
+            printf("Quitter");
+            break;
+        default:
+            printf("Erreur");
+            break;
+    }
+}
