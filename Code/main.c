@@ -86,5 +86,7 @@ orientation 1 : I -> haut, bas
 orientation 2 : I -> droite, gauche
 */
 
+
+//Coucou je teste le git
 //Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
 void update_compatibilite(){}
