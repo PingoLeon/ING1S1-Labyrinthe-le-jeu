@@ -62,7 +62,6 @@ void init_plateau(){
             //si i et j sont paires, alors la cellule est inamovible (if avec ? : )
             plateau[i][j].mobilité = (i%2==0 && j%2==0) ? false : true;
 
-
             plateau[i][j].tresor = false;
             plateau[i][j].type_tresor = 0;
         }
