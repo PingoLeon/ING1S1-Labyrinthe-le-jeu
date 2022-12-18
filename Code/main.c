@@ -88,4 +88,7 @@ orientation 2 : I -> droite, gauche
 
 //Coucou je teste le git
 //Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
-void update_compatibilite(){}
+//en fonction de la compatibilité de la cellule, on met dans la liste de compatibilité toutes les directions possibles
+void update_compatibilite(){
+    //Gougougaga
+}
