@@ -84,7 +84,7 @@ cellule I : 2 orientations possibles, 2 compatibilités possibles
 orientation 1 : I -> haut, bas
 orientation 2 : I -> droite, gauche
 */
-
+//DANS LA LISTE COMPATBILITE, LES INDICES DES ELEMENTS CORRESPONDENT AUX DIRECTIONS (0: haut
 
 //Coucou je teste le git
 //Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
@@ -93,20 +93,89 @@ void update_compatibilite(){
     for(int i=0;i<7;i++){
         for(int j;j<7; j++){
             if (plateau[i][j].type == T){
-                switch (plateau[i][j].orientation)
-
+                switch (plateau[i][j].orientation) {
                 case 1:
-                    plateau[i][j].compatibilite = {DROITE,BAS,GAUCHE}
-
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = 0;
+                    plateau[i][j].compatibilite[1] = DROITE;
+                    plateau[i][j].compatibilite[2] = BAS;
+                    plateau[i][j].compatibilite[3] = GAUCHE;
+                    break;
+                    
                 case 2:
-
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = HAUT;
+                    plateau[i][j].compatibilite[1] = 0;
+                    plateau[i][j].compatibilite[2] = BAS;
+                    plateau[i][j].compatibilite[3] = GAUCHE;
+                    break;
                 case 3:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = HAUT;
+                    plateau[i][j].compatibilite[1] = DROITE;
+                    plateau[i][j].compatibilite[2] = 0;
+                    plateau[i][j].compatibilite[3] = GAUCHE;
+                    break;
 
                 case 4:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = HAUT;
+                    plateau[i][j].compatibilite[1] = DROITE;
+                    plateau[i][j].compatibilite[2] = BAS;
+                    plateau[i][j].compatibilite[3] = 0;
+                    break;
+                }
+            }else if(plateau[i][j].type == L){
+                switch (plateau[i][j].orientation) {
+                case 1:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = HAUT;
+                    plateau[i][j].compatibilite[1] = DROITE;
+                    plateau[i][j].compatibilite[2] = 0;
+                    plateau[i][j].compatibilite[3] = 0;
+                    break;
+                    
+                case 2:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = 0;
+                    plateau[i][j].compatibilite[1] = DROITE;
+                    plateau[i][j].compatibilite[2] = BAS;
+                    plateau[i][j].compatibilite[3] = 0;
+                    break;
+                case 3:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = 0;
+                    plateau[i][j].compatibilite[1] = 0;
+                    plateau[i][j].compatibilite[2] = BAS;
+                    plateau[i][j].compatibilite[3] = GAUCHE;
+                    break;
 
-
-
-
+                case 4:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = HAUT;
+                    plateau[i][j].compatibilite[1] = 0;
+                    plateau[i][j].compatibilite[2] = 0;
+                    plateau[i][j].compatibilite[3] = GAUCHE;
+                    break;
+                }
+            }else if(plateau[i][j].type == I){
+                switch (plateau[i][j].orientation) {
+                case 1:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = HAUT;
+                    plateau[i][j].compatibilite[1] = BAS;
+                    plateau[i][j].compatibilite[2] = 0;
+                    plateau[i][j].compatibilite[3] = 0;
+                    break;
+                    
+                case 2:
+                    //update the list of compatibilities
+                    plateau[i][j].compatibilite[0] = 0;
+                    plateau[i][j].compatibilite[1] = 0;
+                    plateau[i][j].compatibilite[2] = DROITE;
+                    plateau[i][j].compatibilite[3] = GAUCHE;
+                    break;
+                }
             }
         }
     }
