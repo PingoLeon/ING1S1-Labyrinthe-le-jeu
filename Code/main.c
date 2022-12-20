@@ -90,5 +90,24 @@ orientation 2 : I -> droite, gauche
 //Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
 //en fonction de la compatibilité de la cellule, on met dans la liste de compatibilité toutes les directions possibles
 void update_compatibilite(){
-    //Gougougaga
+    for(int i=0;i<7;i++){
+        for(int j;j<7; j++){
+            if (plateau[i][j].type == T){
+                switch (plateau[i][j].orientation)
+
+                case 1:
+                    plateau[i][j].compatibilite = {DROITE,BAS,GAUCHE}
+
+                case 2:
+
+                case 3:
+
+                case 4:
+
+
+
+
+            }
+        }
+    }
 }
