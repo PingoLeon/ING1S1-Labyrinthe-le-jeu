@@ -13,9 +13,6 @@
 //            - Trésor (True, False) (True: la cellule contient un trésor, False: la cellule ne contient pas de trésor)
 //            - Type_trésor (24 types de trésors) (1: trésor de type 1, 2: trésor de type 2, etc...)
 
-//mobilité et trésor doivent être des booléens
-//create 3 structures for each type of cell
-//type T:
 typedef struct cellule{
     int x;
     int y;
@@ -179,3 +176,10 @@ void update_compatibilite(){
         }
     }
 }
+
+//Is there a simpler way for this function?
+//Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
+//en fonction de la compatibilité de la cellule, on met dans la liste de compatibilité toutes les directions possibles
+
+
+
