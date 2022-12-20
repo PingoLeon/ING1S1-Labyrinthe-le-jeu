@@ -84,9 +84,8 @@ cellule I : 2 orientations possibles, 2 compatibilités possibles
 orientation 1 : I -> haut, bas
 orientation 2 : I -> droite, gauche
 */
-//DANS LA LISTE COMPATBILITE, LES INDICES DES ELEMENTS CORRESPONDENT AUX DIRECTIONS (0: haut
+//DANS LA LISTE COMPATBILITE, LES INDICES DES ELEMENTS CORRESPONDENT AUX DIRECTIONS (0: haut, 1: droite, 2: bas, 3: gauche)
 
-//Coucou je teste le git
 //Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
 //en fonction de la compatibilité de la cellule, on met dans la liste de compatibilité toutes les directions possibles
 void update_compatibilite(){
