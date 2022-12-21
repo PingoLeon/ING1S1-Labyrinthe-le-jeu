@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-void sauvgarde(int score,int coups,char *nom_fichier) {
+void sauvgardeetcharger(int score,int coups,char *nom_fichier) {
     FILE *fichier;
     fichier=fopen(nom_fichier,"score.txt");
     if (fichier==NULL){
