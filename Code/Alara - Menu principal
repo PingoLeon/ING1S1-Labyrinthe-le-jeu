@@ -2,42 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h> 
 
-void menu()
-{
-    int choix;
-    printf(" 1 - Nouvelle Partie\n");
-    printf(" 2 - Sauvegarde\n");
-    printf(" 3 - Charger une partie\n");
-    printf(" 4 - Afficher les règles / crédits\n");
-    printf(" 5 - Quitter\n");
-    printf("Votre choix : ");
-    scanf("%d", &choix);
-    switch(choix)
-    {
-        case 1:
-            printf("\nNouvelle Partie\n");
-            break;
-        case 2:
-            printf("\nSauvegarde\n");
-            break;
-        case 3:
-            printf("\nCharger une partie\n");
-            break;
-        case 4:
-            printf("\nAfficher les règles / crédits\n");
-            // Regles();  
-            // Je crois que je n'arrive pas à introduire la sous fonction
-            break;
-        case 5:
-            printf("\nQuitter\n");
-            break;
-        default:
-            printf("Erreur");
-            break;
-    }
-}
-
-
+// Fonction qui affiche les règles du jeu
 void Regles()
 {
     int choixRegles;
@@ -47,6 +12,7 @@ void Regles()
     printf(" 4 - Fin de la partie\n");
     printf("Votre choix : ");
     scanf("%d", &choixRegles);
+    
     switch(choixRegles)
     {
         case 1:
@@ -93,5 +59,56 @@ void Regles()
             printf("Erreur");
             break;
     }
+}
+
+// Fonction qui permet de quitter le jeu
+void Quitter()
+{
+    printf("Merci d'avoir joué au Labyrinth !\n");
+    exit(0);
+}
+
+// Menu principal du jeu
+int main()
+{
+    
+    int choix;
+    printf(" 1 - Nouvelle Partie\n");
+    printf(" 2 - Sauvegarde\n");
+    printf(" 3 - Charger une partie\n");
+    printf(" 4 - Afficher les règles / crédits\n");
+    printf(" 5 - Quitter\n");
+    printf("Votre choix : ");
+    scanf("%d", &choix);
+
+    switch(choix)
+    {
+        case 1:
+            printf("\nNouvelle Partie\n");
+            break;
+        
+        case 2:
+            printf("\nSauvegarde\n");
+            break;
+        
+        case 3:
+            printf("\nCharger une partie\n");
+            break;
+        
+        case 4:
+            printf("\nAfficher les règles / crédits\n");
+            Regles();
+            break;
+        
+        case 5:
+            printf("\nQuitter\n");
+            Quitter();
+            break;
+        default:
+            printf("Erreur");
+            break;
+        }
+    
+    return 0;
 }
 
