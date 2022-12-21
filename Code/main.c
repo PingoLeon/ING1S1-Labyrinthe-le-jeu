@@ -43,6 +43,21 @@ cellule plateau[7][7];
     - les 4 coins du plateau sont destinés à l'apparition des pions, et toutes les autres cases inamovibles (x et y paires) sont destinées à l'apparition des trésors
 */
 
+/*Nombre de cellules et répartition du plateau : 
+Le jeu comporte 16 tuiles inamovibles (x et y paires), et 34 tuiles amovibles (x et y impaires)
+Parmis les 16 tuiles inamovibles : 
+    - 4 sont destinées à l'apparition des pions en L
+    - 12 sont destinées à l'apparition des trésors en T
+
+Parmis les 34 tuiles amovibles, on compte :
+    - 6 Tuiles en T avec un trésor
+    - 6 Tuiles en L avec un trésor
+    - 10 tuiles en L sans trésor
+    - 12 tuiles en I sans trésor
+
+ Note : la tuile restante est mise à disposition des joueurs pour faire bouger le labyrinthe
+*/
+
 //Fonction d'initialisation du plateau
 void init_plateau(){
     //création d'un plateau aléatoire : 
@@ -60,7 +75,29 @@ void init_plateau(){
             plateau[i][j].mobilité = (i%2==0 && j%2==0) ? false : true;
 
             plateau[i][j].tresor = false;
-            plateau[i][j].type_tresor = 0;
+            plateau[i][j].type_tresor = 0;       
+        }
+    }
+}
+
+void correction_plateau(){
+    //correction des cellules inamovibles
+    for(int i=0;i<7;i++){
+        for(int j=0;j<7;j++){
+
+            //16 tuiles inamovibles
+            if(plateau[i][j].mobilité == false ){
+                plateau[i][j].tresor = true;
+                plateau[i][j].type_tresor = rand()%24+1;
+                plateau[i][j].type = L;
+
+                if ((i!=0 || j!=0) && (i!=0 || j!=6) && (i!=6 || j!=0) && (i!=6 || j!=6)){
+                    plateau[i][j].type = T;
+                }  
+            }else{
+                //Avoir seulement 6 T avec Trésor et 6 L avec trésor
+                
+            }
         }
     }
 }
@@ -176,6 +213,8 @@ void update_compatibilite(){
         }
     }
 }
+
+
 
 
 
