@@ -15,5 +15,3 @@ void sauvgarde(int score,int coups,char *nom_fichier) {
     fclose(fichier);
     printf("Partie sauvgardée");
 }
-
-//sauvgarde de la partie dans un fichier texte tout en prenant en parametres les scores du jeu et le nombre de coups joués par le joueur et le nom du fichier dans lequel on veut sauvgarder la partie
