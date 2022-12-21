@@ -177,9 +177,10 @@ void update_compatibilite(){
     }
 }
 
-//Is there a simpler way for this function?
-//Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
-//en fonction de la compatibilité de la cellule, on met dans la liste de compatibilité toutes les directions possibles
+
+
+
+
 
 
 
