@@ -1,16 +1,22 @@
-
 #include <stdio.h>
 #include <stdlib.h> 
+
+
 
 // Fonction qui affiche les règles du jeu
 void Regles()
 {
     int choixRegles;
+    int choixDeroulement;
+
+    do
+    {
     printf(" 1 - But du jeu\n");
     printf(" 2 - Préparation du jeu\n");
     printf(" 3 - Déroulement du jeu\n");
     printf(" 4 - Fin de la partie\n");
-    printf("Votre choix : ");
+    printf(" Tapez 0 si vous voulez revenir au menu principal\n");
+    printf("\n Votre choix : ");
     scanf("%d", &choixRegles);
     
     switch(choixRegles)
@@ -37,16 +43,36 @@ void Regles()
            printf("\t A son tour de jeu, le joueur doit essayer d’atteindre la plaque représentant le même dessin que celui sur la carte supérieure de sa pile.\n");
            printf("\t Pour cela il commence toujours par faire coulisser une rangée ou une colonne du labyrinthe en insérant la plaque supplémentaire du bord vers l’intérieur du plateau, puis il déplace son pion.\n");
            printf("\t Ainsi, un tour se compose toujours de deux phases :\n\n");
-           printf("\t\t 1 - Modification des couloirs (Introduction de la carte couloir supplémentaire).\n");
-           printf("\t\t\t Quand vient son tour, le joueur choisit l’une de ces rangées ou colonnes et pousse la plaque supplémentaire vers l’intérieur du plateau jusqu’à ce qu’une nouvelle plaque soit expulsée à l’opposé.\n");
-           printf("\t\t\t La plaque expulsée reste au bord du plateau jusqu’à ce qu’elle soit réintroduite à un autre endroit par le joueur suivant.\n");
-           printf("\t\t\t Un joueur est toujours obligé de modifier le labyrinthe avant de déplacer son pion, même s’il aurait pu atteindre le dessin recherché sans déplacer les couloirs.\n");
-           printf("\t\t\t Si, en faisant coulisser les couloirs du labyrinthe, un joueur expulse son pion ou un pion adverse du plateau, il est alors replacé à l’opposé, sur la plaque qui vient d’être introduite.\n\n");
-           printf("\t\t 2 - Déplacement du pion.\n");
-           printf("\t\t\t Dès qu’il a modifié le labyrinthe, le joueur peut déplacer son pion. Il peut le déplacer aussi loin qu’il veut jusqu’à n’importe quelle plaque en suivant un couloir ininterrompu.\n");
-           printf("\t\t\t Un joueur peut même s’arrêter sur une case déjà occupée.\n");
-           printf("\t\t\t Si le joueur n’atteint pas le dessin recherché (= celui figurant sur la carte supérieure de sa pile), il peut déplacer son pion aussi loin qu’il veut de manière à être en bonne position pour le prochain tour.\n");
-           printf("\t\t\t S’il atteint le dessin recherché, il retourne sa carte à côté de sa pile. Il peut immédiatement regarder secrètement la carte suivante de sa pile pour connaître son prochain objectif.\n\n");
+
+           printf(" 1 - Modification des couloirs (Introduction de la carte couloir supplémentaire).\n");
+           printf(" 2 - Déplacement du pion.\n");
+           printf("\n Votre choix : ");
+           scanf("%d", &choixDeroulement);
+           
+           if (choixDeroulement == 1)
+           {
+           printf("\n\n 1 - Modification des couloirs (Introduction de la carte couloir supplémentaire).\n");
+           printf("\t Quand vient son tour, le joueur choisit l’une de ces rangées ou colonnes et pousse la plaque supplémentaire vers l’intérieur du plateau jusqu’à ce qu’une nouvelle plaque soit expulsée à l’opposé.\n");
+           printf("\t La plaque expulsée reste au bord du plateau jusqu’à ce qu’elle soit réintroduite à un autre endroit par le joueur suivant.\n");
+           printf("\t Un joueur est toujours obligé de modifier le labyrinthe avant de déplacer son pion, même s’il aurait pu atteindre le dessin recherché sans déplacer les couloirs.\n");
+           printf("\t Si, en faisant coulisser les couloirs du labyrinthe, un joueur expulse son pion ou un pion adverse du plateau, il est alors replacé à l’opposé, sur la plaque qui vient d’être introduite.\n\n");
+           }
+           
+           else if (choixDeroulement == 2)
+           {
+           printf("\n\n 2 - Déplacement du pion.\n");
+           printf("\t Dès qu’il a modifié le labyrinthe, le joueur peut déplacer son pion. Il peut le déplacer aussi loin qu’il veut jusqu’à n’importe quelle plaque en suivant un couloir ininterrompu.\n");
+           printf("\t Un joueur peut même s’arrêter sur une case déjà occupée.\n");
+           printf("\t Si le joueur n’atteint pas le dessin recherché (= celui figurant sur la carte supérieure de sa pile), il peut déplacer son pion aussi loin qu’il veut de manière à être en bonne position pour le prochain tour.\n");
+           printf("\t S’il atteint le dessin recherché, il retourne sa carte à côté de sa pile. Il peut immédiatement regarder secrètement la carte suivante de sa pile pour connaître son prochain objectif.\n\n");
+           }
+
+           else 
+            {
+            printf("Erreur");
+            system("cls");
+            main();
+            }
            break;
         
         case 4:
@@ -57,8 +83,13 @@ void Regles()
     
         default:
             printf("Erreur");
+            system("cls");
+            main();
             break;
     }
+    } while (choixRegles != 0);
+    system("cls");
+    main();
 }
 
 // Fonction qui permet de quitter le jeu
@@ -67,6 +98,7 @@ void Quitter()
     printf("Merci d'avoir joué au Labyrinth !\n");
     exit(0);
 }
+
 
 // Menu principal du jeu
 int main()
@@ -78,7 +110,7 @@ int main()
     printf(" 3 - Charger une partie\n");
     printf(" 4 - Afficher les règles / crédits\n");
     printf(" 5 - Quitter\n");
-    printf("Votre choix : ");
+    printf("\n Votre choix : ");
     scanf("%d", &choix);
 
     switch(choix)
@@ -111,4 +143,3 @@ int main()
     
     return 0;
 }
-
