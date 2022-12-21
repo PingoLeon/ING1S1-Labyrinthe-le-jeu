@@ -36,6 +36,8 @@ typedef struct cellule{
 //Création d'un plateau de 7*7 cases ( 49 cases au total) (liste de liste de cellules)
 cellule plateau[7][7];
 
+cellule global_tile; //global tile used to move the labyrinth
+
 /*Comportement d'une cellule
     - Une cellule type T ou L(type = 1 ou 2) a 4 orientations possibles, tandis qu'une cellule type I(type = 3) a 2 orientations possibles
     - Les cellules ont 4 comptaibilités possibles, une pour chaque côté de la cellule, et si la cellule est sur le bord du plateau, elle n'a pas de compatibilité pour le côté correspondant
@@ -104,24 +106,28 @@ void correction_plateau(){
                 while(choosen == 1){    
                     if(random == 1 && t_counter < 6){
                         plateau[i][j].type = T;
+                        plateau[i][j].orientation = rand()%4+1;
                         plateau[i][j].tresor = true;
                         plateau[i][j].type_tresor = rand()%24+1;
                         t_counter++;
                         choosen = 0;
                     }else if(random == 2 && l_counter < 6){
                         plateau[i][j].type = L;
+                        plateau[i][j].orientation = rand()%4+1;
                         plateau[i][j].tresor = true;
                         plateau[i][j].type_tresor = rand()%24+1;
                         l_counter++;
                         choosen = 0;
                     }else if(random == 3 && l_nontresor_counter < 10){
                         plateau[i][j].type = L;
+                        plateau[i][j].orientation = rand()%4+1;
                         plateau[i][j].tresor = false;
                         plateau[i][j].type_tresor = 0;
                         l_nontresor_counter++;
                         choosen = 0;
                     }else if(random == 4 && i_nontresor_counter < 12){
                         plateau[i][j].type = I;
+                        plateau[i][j].orientation = rand()%2+1;
                         plateau[i][j].tresor = false;
                         plateau[i][j].type_tresor = 0;
                         i_nontresor_counter++;
@@ -133,7 +139,41 @@ void correction_plateau(){
             }
         }
     }
+
+    // generate the last tile
+    generate_last_tile(t_counter, l_counter, l_nontresor_counter);
 }
+
+void generate_last_tile(int t_counter, int l_counter, int l_nontresor_counter){
+    // check the values of the counters
+    if(t_counter < 6){
+        // create a T cell with a treasure
+        global_tile.type = T;
+        global_tile.tresor = true;
+        global_tile.type_tresor = rand()%24+1;
+        global_tile.orientation = rand()%4+1;
+    }else if(l_counter < 6){
+        // create an L cell with a treasure
+        global_tile.type = L;
+        global_tile.tresor = true;
+        global_tile.type_tresor = rand()%24+1;
+        global_tile.orientation = rand()%4+1;
+    }else if(l_nontresor_counter < 10){
+        // create an L cell without a treasure
+        global_tile.type = L;
+        global_tile.tresor = false;
+        global_tile.type_tresor = 0;
+        global_tile.orientation = rand()%4+1;
+    }else{
+        // create an I cell without a treasure
+        global_tile.type = I;
+        global_tile.orientation = rand()%2+1;
+        global_tile.tresor = false;
+        global_tile.type_tresor = 0;
+    }
+}
+                        
+
 
 /*cellule T : 4 orientations possibles, 4 compatibilités possibles
 orientation 1 : T -> droite, bas, gauche
