@@ -82,9 +82,12 @@ void init_plateau(){
 
 void correction_plateau(){
     //correction des cellules inamovibles
+    int t_counter = 0;  // counter for T cells with a treasure
+    int l_counter = 0;  // counter for L cells with a treasure
+    int l_nontresor_counter = 0;  // counter for L cells without a treasure
+    int i_nontresor_counter = 0;  // counter for I cells without a treasure
     for(int i=0;i<7;i++){
         for(int j=0;j<7;j++){
-
             //16 tuiles inamovibles
             if(plateau[i][j].mobilité == false ){
                 plateau[i][j].tresor = true;
@@ -95,8 +98,38 @@ void correction_plateau(){
                     plateau[i][j].type = T;
                 }  
             }else{
-                //Avoir seulement 6 T avec Trésor et 6 L avec trésor
-                
+                //generate a random number and assign it to a type of cell between the 4 stated above
+                int choosen = 1;
+                int random = rand()%4+1;
+                while(choosen == 1){    
+                    if(random == 1 && t_counter < 6){
+                        plateau[i][j].type = T;
+                        plateau[i][j].tresor = true;
+                        plateau[i][j].type_tresor = rand()%24+1;
+                        t_counter++;
+                        choosen = 0;
+                    }else if(random == 2 && l_counter < 6){
+                        plateau[i][j].type = L;
+                        plateau[i][j].tresor = true;
+                        plateau[i][j].type_tresor = rand()%24+1;
+                        l_counter++;
+                        choosen = 0;
+                    }else if(random == 3 && l_nontresor_counter < 10){
+                        plateau[i][j].type = L;
+                        plateau[i][j].tresor = false;
+                        plateau[i][j].type_tresor = 0;
+                        l_nontresor_counter++;
+                        choosen = 0;
+                    }else if(random == 4 && i_nontresor_counter < 12){
+                        plateau[i][j].type = I;
+                        plateau[i][j].tresor = false;
+                        plateau[i][j].type_tresor = 0;
+                        i_nontresor_counter++;
+                        choosen = 0;
+                    }else{
+                        random = rand()%4+1;
+                    }
+                }   
             }
         }
     }
