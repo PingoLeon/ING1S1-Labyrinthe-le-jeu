@@ -83,117 +83,6 @@ orientation 1 : I -> haut, bas
 orientation 2 : I -> droite, gauche
 */
 
-//Fonction d'initialisation du plateau qui crée un plateau rempli de cellules définies uniquement par leur mobilité
-void init_plateau(){
-    //création d'un plateau aléatoire : 
-    int i,j;
-    for(i=0;i<7;i++){
-        for(j=0;j<7;j++){
-            plateau[i][j].x = i;
-            plateau[i][j].y = j;
-            plateau[i][j].mobilité = (i%2 == 0 && j%2 == 0) ? false : true;  
-        }
-    }
-    //Appel de la fonction de correction du plateau qui va remplir les cellules inamovibles et les cellules amovibles, et créer la dernière cellule excroissante 
-    remplissage_plateau();
-
-    //Appel de la fonction de correction des compatibilités qui va remplir les compatibilités des cellules
-    maj_compatibilite();
-}
-
-//Fonction de remplissage du plateau
-void remplissage_plateau(){
-    //correction des cellules inamovibles
-    int t_counter = 0;  // counter for T cells with a treasure
-    int l_counter = 0;  // counter for L cells with a treasure
-    int l_nontresor_counter = 0;  // counter for L cells without a treasure
-    int i_nontresor_counter = 0;  // counter for I cells without a treasure
-    for(int i=0;i<7;i++){
-        for(int j=0;j<7;j++){
-            //16 tuiles inamovibles
-            if(plateau[i][j].mobilité == false ){
-                plateau[i][j].tresor = true;
-                plateau[i][j].type_tresor = rand()%24+1;
-                plateau[i][j].type = L;
-
-                if ((i!=0 || j!=0) && (i!=0 || j!=6) && (i!=6 || j!=0) && (i!=6 || j!=6)){
-                    plateau[i][j].type = T;
-                }  
-            }else{
-                //generate a random number and assign it to a type of cell between the 4 stated above
-                int choosen = 1;
-                int random = rand()%4+1;
-                while(choosen == 1){    
-                    if(random == 1 && t_counter < 6){
-                        plateau[i][j].type = T;
-                        plateau[i][j].orientation = rand()%4+1;
-                        plateau[i][j].tresor = true;
-                        plateau[i][j].type_tresor = rand()%24+1;
-                        t_counter++;
-                        choosen = 0;
-                    }else if(random == 2 && l_counter < 6){
-                        plateau[i][j].type = L;
-                        plateau[i][j].orientation = rand()%4+1;
-                        plateau[i][j].tresor = true;
-                        plateau[i][j].type_tresor = rand()%24+1;
-                        l_counter++;
-                        choosen = 0;
-                    }else if(random == 3 && l_nontresor_counter < 10){
-                        plateau[i][j].type = L;
-                        plateau[i][j].orientation = rand()%4+1;
-                        plateau[i][j].tresor = false;
-                        plateau[i][j].type_tresor = 0;
-                        l_nontresor_counter++;
-                        choosen = 0;
-                    }else if(random == 4 && i_nontresor_counter < 12){
-                        plateau[i][j].type = I;
-                        plateau[i][j].orientation = rand()%2+1;
-                        plateau[i][j].tresor = false;
-                        plateau[i][j].type_tresor = 0;
-                        i_nontresor_counter++;
-                        choosen = 0;
-                    }else{
-                        random = rand()%4+1;
-                    }
-                }   
-            }
-        }
-    }
-
-    // generate the last tile
-    derniere_tuile(t_counter, l_counter, l_nontresor_counter);
-}
-
-//Fonction qui génère la dernière tuile excroissante
-void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter){
-    // check the values of the counters
-    if(t_counter < 6){
-        // create a T cell with a treasure
-        global_tile.type = T;
-        global_tile.tresor = true;
-        global_tile.type_tresor = rand()%24+1;
-        global_tile.orientation = rand()%4+1;
-    }else if(l_counter < 6){
-        // create an L cell with a treasure
-        global_tile.type = L;
-        global_tile.tresor = true;
-        global_tile.type_tresor = rand()%24+1;
-        global_tile.orientation = rand()%4+1;
-    }else if(l_nontresor_counter < 10){
-        // create an L cell without a treasure
-        global_tile.type = L;
-        global_tile.tresor = false;
-        global_tile.type_tresor = 0;
-        global_tile.orientation = rand()%4+1;
-    }else{
-        // create an I cell without a treasure
-        global_tile.type = I;
-        global_tile.orientation = rand()%2+1;
-        global_tile.tresor = false;
-        global_tile.type_tresor = 0;
-    }
-}
-
 //Fonction de mise à jour des compatibilités des cellules en fonction de leurs types et orientations
 void maj_compatibilite(){
     for(int i=0;i<7;i++){
@@ -300,6 +189,124 @@ void maj_compatibilite(){
         }
     }
 }
+
+//Fonction qui génère la dernière tuile excroissante
+void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter){
+    // check the values of the counters
+    if(t_counter < 6){
+        // create a T cell with a treasure
+        global_tile.type = T;
+        global_tile.tresor = true;
+        global_tile.type_tresor = rand()%24+1;
+        global_tile.orientation = rand()%4+1;
+    }else if(l_counter < 6){
+        // create an L cell with a treasure
+        global_tile.type = L;
+        global_tile.tresor = true;
+        global_tile.type_tresor = rand()%24+1;
+        global_tile.orientation = rand()%4+1;
+    }else if(l_nontresor_counter < 10){
+        // create an L cell without a treasure
+        global_tile.type = L;
+        global_tile.tresor = false;
+        global_tile.type_tresor = 0;
+        global_tile.orientation = rand()%4+1;
+    }else{
+        // create an I cell without a treasure
+        global_tile.type = I;
+        global_tile.orientation = rand()%2+1;
+        global_tile.tresor = false;
+        global_tile.type_tresor = 0;
+    }
+}
+
+//Fonction de remplissage du plateau
+void remplissage_plateau(){
+    //correction des cellules inamovibles
+    int t_counter = 0;  // counter for T cells with a treasure
+    int l_counter = 0;  // counter for L cells with a treasure
+    int l_nontresor_counter = 0;  // counter for L cells without a treasure
+    int i_nontresor_counter = 0;  // counter for I cells without a treasure
+    for(int i=0;i<7;i++){
+        for(int j=0;j<7;j++){
+            //16 tuiles inamovibles
+            if(plateau[i][j].mobilité == false ){
+                plateau[i][j].tresor = true;
+                plateau[i][j].type_tresor = rand()%24+1;
+                plateau[i][j].type = L;
+
+                if ((i!=0 || j!=0) && (i!=0 || j!=6) && (i!=6 || j!=0) && (i!=6 || j!=6)){
+                    plateau[i][j].type = T;
+                }  
+            }else{
+                //generate a random number and assign it to a type of cell between the 4 stated above
+                int choosen = 1;
+                int random = rand()%4+1;
+                while(choosen == 1){    
+                    if(random == 1 && t_counter < 6){
+                        plateau[i][j].type = T;
+                        plateau[i][j].orientation = rand()%4+1;
+                        plateau[i][j].tresor = true;
+                        plateau[i][j].type_tresor = rand()%24+1;
+                        t_counter++;
+                        choosen = 0;
+                    }else if(random == 2 && l_counter < 6){
+                        plateau[i][j].type = L;
+                        plateau[i][j].orientation = rand()%4+1;
+                        plateau[i][j].tresor = true;
+                        plateau[i][j].type_tresor = rand()%24+1;
+                        l_counter++;
+                        choosen = 0;
+                    }else if(random == 3 && l_nontresor_counter < 10){
+                        plateau[i][j].type = L;
+                        plateau[i][j].orientation = rand()%4+1;
+                        plateau[i][j].tresor = false;
+                        plateau[i][j].type_tresor = 0;
+                        l_nontresor_counter++;
+                        choosen = 0;
+                    }else if(random == 4 && i_nontresor_counter < 12){
+                        plateau[i][j].type = I;
+                        plateau[i][j].orientation = rand()%2+1;
+                        plateau[i][j].tresor = false;
+                        plateau[i][j].type_tresor = 0;
+                        i_nontresor_counter++;
+                        choosen = 0;
+                    }else{
+                        random = rand()%4+1;
+                    }
+                }   
+            }
+        }
+    }
+
+    // generate the last tile
+    derniere_tuile(t_counter, l_counter, l_nontresor_counter);
+}
+
+//Fonction d'initialisation du plateau qui crée un plateau rempli de cellules définies uniquement par leur mobilité
+void init_plateau(){
+    //création d'un plateau aléatoire : 
+    int i,j;
+    for(i=0;i<7;i++){
+        for(j=0;j<7;j++){
+            plateau[i][j].x = i;
+            plateau[i][j].y = j;
+            plateau[i][j].mobilité = (i%2 == 0 && j%2 == 0) ? false : true;  
+        }
+    }
+    //Appel de la fonction de correction du plateau qui va remplir les cellules inamovibles et les cellules amovibles, et créer la dernière cellule excroissante 
+    remplissage_plateau();
+
+    //Appel de la fonction de correction des compatibilités qui va remplir les compatibilités des cellules
+    maj_compatibilite();
+}
+
+
+int main(){
+    init_plateau();
+    return 0;
+}
+
 
 
 
