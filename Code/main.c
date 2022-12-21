@@ -36,7 +36,8 @@ typedef struct cellule{
 //Création d'un plateau de 7*7 cases ( 49 cases au total) (liste de liste de cellules)
 cellule plateau[7][7];
 
-cellule global_tile; //global tile used to move the labyrinth
+//Création d'une cellule global_tile qui va être utilisée pour faire bouger le plateau
+cellule global_tile; 
 
 /*Comportement d'une cellule
     - Une cellule type T ou L(type = 1 ou 2) a 4 orientations possibles, tandis qu'une cellule type I(type = 3) a 2 orientations possibles
@@ -60,7 +61,29 @@ Parmis les 34 tuiles amovibles, on compte :
  Note : la tuile restante est mise à disposition des joueurs pour faire bouger le labyrinthe
 */
 
-//Fonction d'initialisation du plateau
+/*Compatibilité des cellules :
+
+DANS LA LISTE COMPATBILITE, LES INDICES DES ELEMENTS CORRESPONDENT AUX DIRECTIONS (0: haut, 1: droite, 2: bas, 3: gauche)
+En fonction de la compatibilité de la cellule, on met dans la liste de compatibilité toutes les directions possibles
+
+cellule T : 4 orientations possibles, 4 compatibilités possibles
+orientation 1 : T -> droite, bas, gauche
+orientation 2 : T -> haut, bas, gauche
+orientation 3 : T -> haut, droite, gauche
+orientation 4 : T -> haut, droite, bas
+
+cellule L : 4 orientations possibles, 4 compatibilités possibles
+orientation 1 : L -> haut, droite
+orientation 2 : L -> droite, bas
+orientation 3 : L -> bas, gauche
+orientation 4 : L -> gauche, haut
+
+cellule I : 2 orientations possibles, 2 compatibilités possibles
+orientation 1 : I -> haut, bas
+orientation 2 : I -> droite, gauche
+*/
+
+//Fonction d'initialisation du plateau qui crée un plateau rempli de cellules définies uniquement par leur mobilité
 void init_plateau(){
     //création d'un plateau aléatoire : 
     int i,j;
@@ -68,21 +91,18 @@ void init_plateau(){
         for(j=0;j<7;j++){
             plateau[i][j].x = i;
             plateau[i][j].y = j;
-            plateau[i][j].type = rand()%3+1;
-
-            //si la cellule est de type T ou L, alors elle a 4 orientations possibles, sinon elle a 2 orientations possibles (if avec ? : )
-            plateau[i][j].orientation =  (plateau[i][j].type == I) ? rand()%2+1 : rand()%4+1;
-
-            //si i et j sont paires, alors la cellule est inamovible (if avec ? : )
-            plateau[i][j].mobilité = (i%2==0 && j%2==0) ? false : true;
-
-            plateau[i][j].tresor = false;
-            plateau[i][j].type_tresor = 0;       
+            plateau[i][j].mobilité = (i%2 == 0 && j%2 == 0) ? false : true;  
         }
     }
+    //Appel de la fonction de correction du plateau qui va remplir les cellules inamovibles et les cellules amovibles, et créer la dernière cellule excroissante 
+    remplissage_plateau();
+
+    //Appel de la fonction de correction des compatibilités qui va remplir les compatibilités des cellules
+    maj_compatibilite();
 }
 
-void correction_plateau(){
+//Fonction de remplissage du plateau
+void remplissage_plateau(){
     //correction des cellules inamovibles
     int t_counter = 0;  // counter for T cells with a treasure
     int l_counter = 0;  // counter for L cells with a treasure
@@ -141,10 +161,11 @@ void correction_plateau(){
     }
 
     // generate the last tile
-    generate_last_tile(t_counter, l_counter, l_nontresor_counter);
+    derniere_tuile(t_counter, l_counter, l_nontresor_counter);
 }
 
-void generate_last_tile(int t_counter, int l_counter, int l_nontresor_counter){
+//Fonction qui génère la dernière tuile excroissante
+void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter){
     // check the values of the counters
     if(t_counter < 6){
         // create a T cell with a treasure
@@ -172,30 +193,9 @@ void generate_last_tile(int t_counter, int l_counter, int l_nontresor_counter){
         global_tile.type_tresor = 0;
     }
 }
-                        
 
-
-/*cellule T : 4 orientations possibles, 4 compatibilités possibles
-orientation 1 : T -> droite, bas, gauche
-orientation 2 : T -> haut, bas, gauche
-orientation 3 : T -> haut, droite, gauche
-orientation 4 : T -> haut, droite, bas
-
-cellule L : 4 orientations possibles, 4 compatibilités possibles
-orientation 1 : L -> haut, droite
-orientation 2 : L -> droite, bas
-orientation 3 : L -> bas, gauche
-orientation 4 : L -> gauche, haut
-
-cellule I : 2 orientations possibles, 2 compatibilités possibles
-orientation 1 : I -> haut, bas
-orientation 2 : I -> droite, gauche
-*/
-//DANS LA LISTE COMPATBILITE, LES INDICES DES ELEMENTS CORRESPONDENT AUX DIRECTIONS (0: haut, 1: droite, 2: bas, 3: gauche)
-
-//Fonction de mise à jour des compatibilités des cellules en fonction de leurs attributs avec des switch case
-//en fonction de la compatibilité de la cellule, on met dans la liste de compatibilité toutes les directions possibles
-void update_compatibilite(){
+//Fonction de mise à jour des compatibilités des cellules en fonction de leurs types et orientations
+void maj_compatibilite(){
     for(int i=0;i<7;i++){
         for(int j;j<7; j++){
             if (plateau[i][j].type == T){
@@ -282,6 +282,20 @@ void update_compatibilite(){
                     plateau[i][j].compatibilite[3] = GAUCHE;
                     break;
                 }
+            }
+
+            //Si la cellule est au bord du plateau, on met à jour les compatibilités
+            if(i==0){
+                plateau[i][j].compatibilite[0] = 0;
+            }
+            if(i==6){
+                plateau[i][j].compatibilite[2] = 0;
+            }
+            if(j==0){
+                plateau[i][j].compatibilite[3] = 0;
+            }
+            if(j==6){
+                plateau[i][j].compatibilite[1] = 0;
             }
         }
     }
