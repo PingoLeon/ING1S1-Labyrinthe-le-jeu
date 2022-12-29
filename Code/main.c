@@ -299,13 +299,189 @@ void init_plateau(){
     maj_compatibilite();
 }
 
+void afficher_cellule_ligne1(int type, int orientation) {
+    if (type == T) {
+        if (orientation == 1){
+            printf("# # #");
+        } else if (orientation == 2){
+            printf("#   #");
+        } else if (orientation == 3){
+            printf("#   #");
+        } else if (orientation == 4){
+            printf("#   #");
+        }
+    } else if (type == L) {
+        if (orientation == 1){
+            printf("#   #");
+        }else if (orientation == 2){
+            printf("# # #");
+        } else if(orientation == 3){
+            printf("# # #");
+        } else if (orientation == 4){
+            printf("#   #");
+        }
+    } else if (type == I) {
+        if (orientation == 1){
+            printf("#   #");
+        } else if (orientation == 2){
+            printf("# # #");
+        }
+    }
+}
+void afficher_cellule_ligne2(int type, int orientation) {
+    if (type == T) {
+        if (orientation == 1){
+            printf("     ");
+        } else if (orientation == 2){
+            printf("    #");
+        } else if (orientation == 3){
+            printf("     ");
+        } else if (orientation == 4){
+            printf("#    ");
+        }
+    }else if (type == L) {
+        if (orientation == 1){
+            printf("#    ");
+        }else if (orientation == 2){
+            printf("#    ");
+        } else if(orientation == 3){
+            printf("    #");
+        } else if (orientation == 4){
+            printf("#    ");
+        }
+    } else if (type == I) {
+        if (orientation == 1){
+            printf("#   #");
+        } else if (orientation == 2){
+            printf("     ");
+        }
+    }
+}
+
+void afficher_cellule_ligne3(int type, int orientation){
+    if (type == T) {
+        if (orientation == 1){
+            printf("#   #");
+        } else if (orientation == 2){
+            printf("#   #");
+        } else if (orientation == 3){
+            printf("# # #");
+        } else if (orientation == 4){
+            printf("#   #");
+        }
+    }else if (type == L){
+        if (orientation == 1){
+            printf("# # #");
+        }else if (orientation == 2){
+            printf("#   #");
+        } else if(orientation == 3){
+            printf("#   #");
+        } else if (orientation == 4){
+            printf("# # #");
+        }
+    } else if (type == I){
+        if (orientation == 1){
+            printf("#   #");
+        } else if (orientation == 2){
+            printf("# # #");
+        }
+    }
+}
+
+
+
+
+void afficher_plateau() {
+    for (int i = 0; i < 7; i++) {
+        for(int num_line = 0; num_line < 3; num_line++){
+            for (int j = 0; j < 7; j++) {
+                
+                //replace the type with the letter it corresponds to (L, T, I)
+                printf("On affiche la ligne %d de la cellule %d %d de type", num_line, i, j);
+                if (plateau[i][j].type == 1){
+                    printf(" L");
+                } else if (plateau[i][j].type == 2){
+                    printf(" T");
+                } else if (plateau[i][j].type == 3){
+                    printf(" I");
+                }
+                printf(" et d'orientation %d\n", plateau[i][j].orientation);
+                
+               /*
+                if (num_line == 0){
+                    afficher_cellule_ligne1(plateau[i][j].type, plateau[i][j].orientation);
+                } else if (num_line == 1){
+                    afficher_cellule_ligne2(plateau[i][j].type, plateau[i][j].orientation);
+                } else if (num_line == 2){
+                    afficher_cellule_ligne3(plateau[i][j].type, plateau[i][j].orientation);
+                }
+                */
+            }
+            // Print the line of cells
+            printf("\n");
+        }
+        break;
+    }
+}
+
 
 int main(){
     init_plateau();
+    afficher_plateau();
     return 0;
 }
 
 
+
+void afficher_une_cellule(int type, int orientation, char* line) {
+    if (type == T) {
+        if (orientation == 1){
+            printf("# # #\n");
+            printf("     \n");
+            printf("#   #\n");
+        } else if (orientation == 2){
+            printf("#   #\n");
+            printf("    #\n");
+            printf("#   #\n");
+        } else if (orientation == 3){
+            printf("#   #\n");
+            printf("     \n");
+            printf("# # #\n");
+        } else if (orientation == 4){
+            printf("#   #\n");
+            printf("#    \n");
+            printf("#   #\n");
+        }
+    }else if (type == L) {
+        if (orientation == 1){
+            printf("#   #\n");
+            printf("#    \n");
+            printf("# # #\n");
+        }else if (orientation == 2){
+            printf("# # #\n");
+            printf("#    \n");
+            printf("#   #\n");
+        } else if(orientation == 3){
+            printf("# # #\n");
+            printf("    #\n");
+            printf("#   #\n");
+        } else if (orientation == 4){
+            printf("#   #\n");
+            printf("    #\n");
+            printf("# # #\n");
+        }
+    } else if (type == I) {
+        if (orientation == 1){
+            printf("#   #\n");
+            printf("#   #\n");
+            printf("#   #\n");
+        } else if (orientation == 2){
+            printf("# # #\n");
+            printf("     \n");
+            printf("# # #\n");
+        }
+    }
+}
 
 
 
