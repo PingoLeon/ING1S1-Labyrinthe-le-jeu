@@ -2,6 +2,67 @@
 #include <stdlib.h> 
 
 
+// Structure qui définit un pion
+struct Pion
+{
+    int numero;
+    int x;
+    int y;
+    char symbole;
+};
+
+// On génère les 4 pions possibles
+struct Pion pion1 = {1, 0, 0, 'A'};
+struct Pion pion2 = {2, 0, 6, 'B'};
+struct Pion pion3 = {3, 6, 0, 'C'};
+struct Pion pion4 = {4, 6, 6, 'D'};
+
+// Fonction qui initialise les joueurs et leur attribue un pion
+void init_pions()
+{
+    int nbJoueurs;
+    printf("Combien de joueurs ? (2 à 4) : ");
+    scanf("%d", &nbJoueurs);
+    if (nbJoueurs < 2 || nbJoueurs > 4)
+    {
+        printf("Erreur : le nombre de joueurs doit être compris entre 2 et 4.\n");
+    }
+    else
+    {
+        printf("Il y a %d joueurs.\n", nbJoueurs);
+    }
+
+    // On génère les 4 pions
+    if (nbJoueurs == 2)
+    {
+        printf("Il y a 2 joueurs.\n");
+        printf("Pion 1 : %c\n", pion1.symbole);
+        printf("Pion 2 : %c\n", pion2.symbole);
+    }
+    else if (nbJoueurs == 3)
+    {
+        printf("Il y a 3 joueurs.\n");
+        printf("Pion 1 : %c\n", pion1.symbole);
+        printf("Pion 2 : %c\n", pion2.symbole);
+        printf("Pion 3 : %c\n", pion3.symbole);
+    }
+    else if (nbJoueurs == 4)
+    {
+        printf("Il y a 4 joueurs.\n");
+        printf("Pion 1 : %c\n", pion1.symbole);
+        printf("Pion 2 : %c\n", pion2.symbole);
+        printf("Pion 3 : %c\n", pion3.symbole);
+        printf("Pion 4 : %c\n", pion4.symbole);
+    }
+
+} 
+
+
+// Fonction qui permet de créer une nouvelle partie et permet son déroulement
+void nouvellepartie()
+{
+    init_pions();
+}
 
 // Fonction qui affiche les règles du jeu
 void Regles()
@@ -117,6 +178,7 @@ int main()
     {
         case 1:
             printf("\nNouvelle Partie\n");
+            nouvellepartie();
             break;
         
         case 2:
