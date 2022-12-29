@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 //Structure d'une cellule sur un plateau de jeu :
 //Attributs : - Position (x,y)
@@ -190,6 +191,10 @@ void maj_compatibilite(){
 
 //Fonction qui génère la dernière tuile excroissante
 void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter){
+
+    // Seed the random number generator with the current time
+    srand(time(NULL));
+
     // check the values of the counters
     if(t_counter < 6){
         // create a T cell with a treasure
@@ -220,6 +225,10 @@ void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter){
 
 //Fonction de remplissage du plateau
 void remplissage_plateau(){
+
+    // Seed the random number generator with the current time
+    srand(time(NULL));
+
     //correction des cellules inamovibles
     int t_counter = 0;  // counter for T cells with a treasure
     int l_counter = 0;  // counter for L cells with a treasure
@@ -227,14 +236,27 @@ void remplissage_plateau(){
     int i_nontresor_counter = 0;  // counter for I cells without a treasure
     for(int i=0;i<7;i++){
         for(int j=0;j<7;j++){
-            //16 tuiles inamovibles
+            //16 tuiles inamovibles : On dit qu'elles ont un trésor 
             if(plateau[i][j].mobilité == false ){
-                plateau[i][j].tresor = true;
-                plateau[i][j].type_tresor = rand()%24+1;
-                plateau[i][j].type = L;
-
-                if ((i!=0 || j!=0) && (i!=0 || j!=6) && (i!=6 || j!=0) && (i!=6 || j!=6)){
+                if ((i!=0 || j!=0) && (i!=0 || j!=6) && (i!=6 || j!=0) && (i!=6 || j!=6)){ // Si la cellule n'est pas une des 4 coins, elle a alors une forme de T, et si c'est un coin, elle possède un trésor
                     plateau[i][j].type = T;
+                    plateau[i][j].tresor = true;
+                    plateau[i][j].type_tresor = rand()%24+1;
+                    plateau[i][j].orientation = rand()%4+1;
+                }else{
+                    plateau[i][j].type = L;
+                    plateau[i][j].tresor = false;
+
+                    //corners should be L cells with different orientations
+                    if(i==0 && j==0){
+                        plateau[i][j].orientation = 2;
+                    }else if(i==0 && j==6){
+                        plateau[i][j].orientation = 3;
+                    }else if(i==6 && j==0){
+                        plateau[i][j].orientation = 1;
+                    }else if(i==6 && j==6){
+                        plateau[i][j].orientation = 4;
+                    }
                 }  
             }else{
                 //generate a random number and assign it to a type of cell between the 4 stated above
@@ -302,58 +324,58 @@ void init_plateau(){
 void afficher_cellule_ligne1(int type, int orientation) {
     if (type == T) {
         if (orientation == 1){
-            printf("# # #");
+            printf("# # # ");
         } else if (orientation == 2){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 3){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 4){
-            printf("#   #");
+            printf("#   # ");
         }
     } else if (type == L) {
         if (orientation == 1){
-            printf("#   #");
+            printf("#   # ");
         }else if (orientation == 2){
-            printf("# # #");
+            printf("# # # ");
         } else if(orientation == 3){
-            printf("# # #");
+            printf("# # # ");
         } else if (orientation == 4){
-            printf("#   #");
+            printf("#   # ");
         }
     } else if (type == I) {
         if (orientation == 1){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 2){
-            printf("# # #");
+            printf("# # # ");
         }
     }
 }
 void afficher_cellule_ligne2(int type, int orientation) {
     if (type == T) {
         if (orientation == 1){
-            printf("     ");
+            printf("      ");
         } else if (orientation == 2){
-            printf("    #");
+            printf("    # ");
         } else if (orientation == 3){
-            printf("     ");
+            printf("      ");
         } else if (orientation == 4){
-            printf("#    ");
+            printf("#     ");
         }
     }else if (type == L) {
         if (orientation == 1){
-            printf("#    ");
+            printf("#     ");
         }else if (orientation == 2){
-            printf("#    ");
+            printf("#     ");
         } else if(orientation == 3){
-            printf("    #");
+            printf("    # ");
         } else if (orientation == 4){
-            printf("#    ");
+            printf("#     ");
         }
     } else if (type == I) {
         if (orientation == 1){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 2){
-            printf("     ");
+            printf("      ");
         }
     }
 }
@@ -361,29 +383,29 @@ void afficher_cellule_ligne2(int type, int orientation) {
 void afficher_cellule_ligne3(int type, int orientation){
     if (type == T) {
         if (orientation == 1){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 2){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 3){
-            printf("# # #");
+            printf("# # # ");
         } else if (orientation == 4){
-            printf("#   #");
+            printf("#   # ");
         }
     }else if (type == L){
         if (orientation == 1){
-            printf("# # #");
+            printf("# # # ");
         }else if (orientation == 2){
-            printf("#   #");
+            printf("#   # ");
         } else if(orientation == 3){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 4){
-            printf("# # #");
+            printf("# # # ");
         }
     } else if (type == I){
         if (orientation == 1){
-            printf("#   #");
+            printf("#   # ");
         } else if (orientation == 2){
-            printf("# # #");
+            printf("# # # ");
         }
     }
 }
@@ -395,19 +417,6 @@ void afficher_plateau() {
     for (int i = 0; i < 7; i++) {
         for(int num_line = 0; num_line < 3; num_line++){
             for (int j = 0; j < 7; j++) {
-                
-                //replace the type with the letter it corresponds to (L, T, I)
-                printf("On affiche la ligne %d de la cellule %d %d de type", num_line, i, j);
-                if (plateau[i][j].type == 1){
-                    printf(" L");
-                } else if (plateau[i][j].type == 2){
-                    printf(" T");
-                } else if (plateau[i][j].type == 3){
-                    printf(" I");
-                }
-                printf(" et d'orientation %d\n", plateau[i][j].orientation);
-                
-               /*
                 if (num_line == 0){
                     afficher_cellule_ligne1(plateau[i][j].type, plateau[i][j].orientation);
                 } else if (num_line == 1){
@@ -415,18 +424,16 @@ void afficher_plateau() {
                 } else if (num_line == 2){
                     afficher_cellule_ligne3(plateau[i][j].type, plateau[i][j].orientation);
                 }
-                */
             }
-            // Print the line of cells
             printf("\n");
         }
-        break;
     }
 }
 
 
 int main(){
     init_plateau();
+    
     afficher_plateau();
     return 0;
 }
