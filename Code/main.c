@@ -449,7 +449,7 @@ void placer_tresor(int type, int orientation, int x, int y) {
                 plateau[x][y].tresor = 1;
             }
         } else if (type == L) {
-            if (x != 0 && x != 6 && y != 0 && y != 6) {
+            if (x != 0 && x != 7 && y != 0 && y != 7) {
                 plateau[x][y].type = L;
                 plateau[x][y].orientation = orientation;
                 plateau[x][y].tresor = 1;
