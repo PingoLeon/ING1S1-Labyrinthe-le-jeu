@@ -485,7 +485,6 @@ void afficher_plateau() {
             printf("\n");
         }
     }
-    
 }
 
 //Fonction permettant de placer les tresors en fonction de la tuile imposée
@@ -499,7 +498,7 @@ void afficher_plateau() {
 //il faut 12 I sans tresor
 
 void placer_tresor(int type, int orientation, int x, int y) {
-    if (plateau[x][y].type == VIDE) {
+    if (plateau[x][y].tresor == true) {
         if (type == T) {
             if (x != 0 && x != 7 && y != 0 && y != 7) {
                 plateau[x][y].type = T;
