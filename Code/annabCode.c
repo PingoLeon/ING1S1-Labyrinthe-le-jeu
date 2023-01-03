@@ -1,5 +1,3 @@
-// c'est un test mais pour l'instant c'est bien mon code
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -90,7 +88,8 @@ int casesTableau(void){
         {'#', '#', '#'},
     };
     // 6L avec trésor
-    // 10L sans trésor
+    // 4L avec les positions des pions
+    // 6L sans trésor
 
 
     char caseT [3][3]= {
@@ -188,6 +187,21 @@ printf("\n");
 }
 
 
+//  lancer le jeu
+//v     combien de joueur
+//?     noms des joueurs
+//v     placer les joueurs
+//v     appeler l'initialisation du tab
+//v     afficher le tab
+//      cartes trésors données aléatoirement 
+//      joueur choisi alatoirement pour commencer 
+
+//  gérération du lab
+//      Afficher le tab (16 tuiles fixes, 34 autres)
+
+//  déroulement d'un tour de jeu 
+//      glisser rangée
+//      déplacer pion si on le souhaite 
 
 
 
@@ -197,7 +211,6 @@ int main(void)
     //
     carteDeFace();
     carteDeDos(); 
-
 
     //casesTableau();
     return 0;
