@@ -34,6 +34,28 @@ typedef struct cellule{
 #define BAS 3
 #define GAUCHE 4
 
+/*
+    0 : Noir
+    1 : Bleu foncé
+    2 : Vert foncé
+    3 : Turquoise
+    4 : Rouge foncé
+    5 : Violet
+    6 : Vert caca d'oie
+    7 : Gris clair
+    8 : Gris foncé
+    9 : Bleu fluo
+    10 : Vert fluo
+    11 : Turquoise
+    12 : Rouge fluo
+    13 : Violet 2
+    14 : Jaune
+    15 : Blanc
+    */
+#define COULEUR_TEXTE 9
+#define COULEUR_FOND 0
+
+
 //Création d'un plateau de 7*7 cases ( 49 cases au total) (liste de liste de cellules)
 cellule plateau[7][7];
 
@@ -469,15 +491,15 @@ void afficher_plateau() {
         for(int num_line = 0; num_line < 3; num_line++){
             for (int j = 0; j < 7; j++) {
                 if (num_line == 0){
-                    Color(12,15);
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne1(plateau[i][j].type, plateau[i][j].orientation);
                     Color(15,0);
                 } else if (num_line == 1){
-                    Color(12,15);
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne2(plateau[i][j].type, plateau[i][j].orientation);
                     Color(15,0);
                 } else if (num_line == 2){
-                    Color(12,15);
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne3(plateau[i][j].type, plateau[i][j].orientation);
                     Color(15,0);
                 }
