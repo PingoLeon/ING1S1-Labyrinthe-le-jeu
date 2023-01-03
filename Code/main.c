@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <locale.h>
+#include <windows.h>
 
 //Structure d'une cellule sur un plateau de jeu :
 //Attributs : - Position (x,y)
@@ -32,11 +34,40 @@ typedef struct cellule{
 #define BAS 3
 #define GAUCHE 4
 
+/*
+    0 : Noir
+    1 : Bleu foncé
+    2 : Vert foncé
+    3 : Turquoise
+    4 : Rouge foncé
+    5 : Violet
+    6 : Vert caca d'oie
+    7 : Gris clair
+    8 : Gris foncé
+    9 : Bleu fluo
+    10 : Vert fluo
+    11 : Turquoise
+    12 : Rouge fluo
+    13 : Violet 2
+    14 : Jaune
+    15 : Blanc
+    */
+#define COULEUR_TEXTE 9
+#define COULEUR_FOND 0
+
+
 //Création d'un plateau de 7*7 cases ( 49 cases au total) (liste de liste de cellules)
 cellule plateau[7][7];
 
 //Création d'une cellule global_tile qui va être utilisée pour faire bouger le plateau
 cellule global_tile; 
+
+//initialisation de la couleur du texte et du fond de la console
+void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
+{
+    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
+}
 
 /*Comportement d'une cellule
     - Une cellule type T ou L(type = 1 ou 2) a 4 orientations possibles, tandis qu'une cellule type I(type = 3) a 2 orientations possibles
@@ -321,61 +352,102 @@ void init_plateau(){
     maj_compatibilite();
 }
 
+void fill(int nb){
+    //each text has 3 characters possible, being filled with double space, or a full block (u2588)
+    //We need all combinations of those 3 characters to fill the line
+    switch (nb)
+    {
+    case 0:
+        printf("      "); //000
+        break;
+    case 1:
+        printf("    \u2588\u2588"); //001
+        break;
+    
+    case 2:
+        printf("  \u2588\u2588  "); //010
+        break;
+    
+    case 3:
+        printf("  \u2588\u2588\u2588\u2588"); //011
+        break;
+    
+    case 4:
+        printf("\u2588\u2588    "); //100
+        break;
+    
+    case 5:
+        printf("\u2588\u2588  \u2588\u2588"); //101
+        break;
+    
+    case 6:
+        printf("\u2588\u2588\u2588\u2588  "); //110
+        break;
+
+    case 7:
+        printf("\u2588\u2588\u2588\u2588\u2588\u2588"); //111
+        break;
+
+    default:
+        break;
+    }
+}
+
 void afficher_cellule_ligne1(int type, int orientation) {
     if (type == T) {
         if (orientation == 1){
-            printf("# # # ");
+            fill(7);
         } else if (orientation == 2){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 3){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 4){
-            printf("#   # ");
+            fill(5);
         }
     } else if (type == L) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         }else if (orientation == 2){
-            printf("# # # ");
+            fill(7);
         } else if(orientation == 3){
-            printf("# # # ");
+            fill(7);
         } else if (orientation == 4){
-            printf("#   # ");
+            fill(5);
         }
     } else if (type == I) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("# # # ");
+            fill(7);
         }
     }
 }
 void afficher_cellule_ligne2(int type, int orientation) {
     if (type == T) {
         if (orientation == 1){
-            printf("      ");
+            fill(0);
         } else if (orientation == 2){
-            printf("    # ");
+            fill(1);
         } else if (orientation == 3){
-            printf("      ");
+            fill(0);
         } else if (orientation == 4){
-            printf("#     ");
+            fill(4);
         }
     }else if (type == L) {
         if (orientation == 1){
-            printf("#     ");
+            fill(4);
         }else if (orientation == 2){
-            printf("#     ");
+            fill(4);
         } else if(orientation == 3){
-            printf("    # ");
+            fill(1);
         } else if (orientation == 4){
-            printf("#     ");
+            fill(1);
         }
     } else if (type == I) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("      ");
+            fill(0);
         }
     }
 }
@@ -383,29 +455,29 @@ void afficher_cellule_ligne2(int type, int orientation) {
 void afficher_cellule_ligne3(int type, int orientation){
     if (type == T) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 3){
-            printf("# # # ");
+            fill(7);
         } else if (orientation == 4){
-            printf("#   # ");
+            fill(5);
         }
     }else if (type == L){
         if (orientation == 1){
-            printf("# # # ");
+            fill(7);
         }else if (orientation == 2){
-            printf("#   # ");
+            fill(5);
         } else if(orientation == 3){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 4){
-            printf("# # # ");
+            fill(7);
         }
     } else if (type == I){
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("# # # ");
+            fill(7);
         }
     }
 }
@@ -414,18 +486,53 @@ void afficher_cellule_ligne3(int type, int orientation){
 
 
 void afficher_plateau() {
+    setlocale(LC_ALL, "en_US.utf8");
     for (int i = 0; i < 7; i++) {
         for(int num_line = 0; num_line < 3; num_line++){
             for (int j = 0; j < 7; j++) {
                 if (num_line == 0){
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne1(plateau[i][j].type, plateau[i][j].orientation);
+                    Color(15,0);
                 } else if (num_line == 1){
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne2(plateau[i][j].type, plateau[i][j].orientation);
+                    Color(15,0);
                 } else if (num_line == 2){
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne3(plateau[i][j].type, plateau[i][j].orientation);
+                    Color(15,0);
                 }
             }
             printf("\n");
+        }
+    }
+}
+
+//Fonction permettant de placer les tresors en fonction de la tuile imposée
+//Si la tuile est déjà occupée, on ne fait rien
+//Les tuiles I et celles sur les bords ne peuvent pas contenir de trésor
+//Les tuiles L et T peuvent contenir un trésor si elles sont libres et si elles ne sont pas sur les bords du plateau
+//il faut 6L avec tresor
+//il faut 4L avec position des pions
+//il faut 6L sans tresor
+//il faut 6T avec tresor
+//il faut 12 I sans tresor
+
+void placer_tresor(int type, int orientation, int x, int y) {
+    if (plateau[x][y].tresor == true) {
+        if (type == T) {
+            if (x != 0 && x != 7 && y != 0 && y != 7) {
+                plateau[x][y].type = T;
+                plateau[x][y].orientation = orientation;
+                plateau[x][y].tresor = 1;
+            }
+        } else if (type == L) {
+            if (x != 0 && x != 7 && y != 0 && y != 7) {
+                plateau[x][y].type = L;
+                plateau[x][y].orientation = orientation;
+                plateau[x][y].tresor = 1;
+            }
         }
     }
 }
@@ -440,55 +547,7 @@ int main(){
 
 
 
-void afficher_une_cellule(int type, int orientation, char* line) {
-    if (type == T) {
-        if (orientation == 1){
-            printf("# # #\n");
-            printf("     \n");
-            printf("#   #\n");
-        } else if (orientation == 2){
-            printf("#   #\n");
-            printf("    #\n");
-            printf("#   #\n");
-        } else if (orientation == 3){
-            printf("#   #\n");
-            printf("     \n");
-            printf("# # #\n");
-        } else if (orientation == 4){
-            printf("#   #\n");
-            printf("#    \n");
-            printf("#   #\n");
-        }
-    }else if (type == L) {
-        if (orientation == 1){
-            printf("#   #\n");
-            printf("#    \n");
-            printf("# # #\n");
-        }else if (orientation == 2){
-            printf("# # #\n");
-            printf("#    \n");
-            printf("#   #\n");
-        } else if(orientation == 3){
-            printf("# # #\n");
-            printf("    #\n");
-            printf("#   #\n");
-        } else if (orientation == 4){
-            printf("#   #\n");
-            printf("    #\n");
-            printf("# # #\n");
-        }
-    } else if (type == I) {
-        if (orientation == 1){
-            printf("#   #\n");
-            printf("#   #\n");
-            printf("#   #\n");
-        } else if (orientation == 2){
-            printf("# # #\n");
-            printf("     \n");
-            printf("# # #\n");
-        }
-    }
-}
+
 
 
 
