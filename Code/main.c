@@ -488,6 +488,34 @@ void afficher_plateau() {
     
 }
 
+//Fonction permettant de placer les tresors en fonction de la tuile imposée
+//Si la tuile est déjà occupée, on ne fait rien
+//Les tuiles I et celles sur les bords ne peuvent pas contenir de trésor
+//Les tuiles L et T peuvent contenir un trésor si elles sont libres et si elles ne sont pas sur les bords du plateau
+//il faut 6L avec tresor
+//il faut 4L avec position des pions
+//il faut 6L sans tresor
+//il faut 6T avec tresor
+//il faut 12 I sans tresor
+
+void placer_tresor(int type, int orientation, int x, int y) {
+    if (plateau[x][y].type == VIDE) {
+        if (type == T) {
+            if (x != 0 && x != 7 && y != 0 && y != 7) {
+                plateau[x][y].type = T;
+                plateau[x][y].orientation = orientation;
+                plateau[x][y].tresor = 1;
+            }
+        } else if (type == L) {
+            if (x != 0 && x != 7 && y != 0 && y != 7) {
+                plateau[x][y].type = L;
+                plateau[x][y].orientation = orientation;
+                plateau[x][y].tresor = 1;
+            }
+        }
+    }
+}
+
 
 int main(){
     init_plateau();
