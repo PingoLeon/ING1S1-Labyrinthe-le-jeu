@@ -203,7 +203,7 @@ void maj_compatibilite(){
                 }
             }
 
-            //Si la cellule est au bord du plateau, on met à jour les compatibilités
+            //Si la cellule est au bord du plateau, on met à jour les compatibilités 
             if(i==0){
                 plateau[i][j].compatibilite[0] = 0;
             }
@@ -519,12 +519,12 @@ void afficher_plateau() {
 //il faut 12 I sans tresor
 
 void placer_tresor(int type, int orientation, int x, int y) {
-    if (plateau[x][y].tresor == true) {
-        if (type == T) {
-            if (x != 0 && x != 7 && y != 0 && y != 7) {
+    if (plateau[x][y].tresor == true) { // Si la case est déjà occupée, on ne fait rien
+        if (type == T) { // Si la tuile est un T
+            if (x != 0 && x != 7 && y != 0 && y != 7) { // Si la tuile n'est pas sur les bords du plateau 
                 plateau[x][y].type = T;
-                plateau[x][y].orientation = orientation;
-                plateau[x][y].tresor = 1;
+                plateau[x][y].orientation = orientation; 
+                plateau[x][y].tresor = 1; // On place le trésor
             }
         } else if (type == L) {
             if (x != 0 && x != 7 && y != 0 && y != 7) {
