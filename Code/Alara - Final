@@ -736,7 +736,7 @@ void carteDeDos (){
 
 }
 
-// Création d'une onction qui va appeler les deux fonctions précédentes pour créer une carte trésor de face et de dos
+// Création d'une fonction qui va appeler les deux fonctions précédentes pour créer une carte trésor de face et de dos
 void carteTresor ()
 {
     carteDeFace();
@@ -751,6 +751,7 @@ void initialisationPartie ()
     afficher_plateau();
     init_pions();
     carteTresor();
+    placer_tresor();
 }
 
 // Fonction qui affiche les règles du jeu
@@ -851,7 +852,7 @@ void Quitter()
   
 
 // Menu principal du jeu
-void menuPrincipal ()
+void menuPrincipal()
 {
     int choix;
     printf(" 1 - Nouvelle Partie\n");
@@ -894,4 +895,3 @@ int main ()
 menuPrincipal();
 return 0; 
 }
-
