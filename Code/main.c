@@ -565,7 +565,8 @@ void placer_tresor(int type, int orientation, int x, int y) {
 }
 
 void insertion_cellule(){
-    //On lines and columns 2 and 6, we ask the user what 
+    printf("Veuillez entrer les coordonnées où insérer la cellule : \n");
+    printf("Sur une ligne ou une colonne")
 }
 
 int main(){
