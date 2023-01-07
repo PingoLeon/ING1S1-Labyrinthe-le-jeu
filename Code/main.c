@@ -574,79 +574,10 @@ void placer_tresor(int type, int orientation, int x, int y) {
     }
 }
 
-void insertion_cellule(char ligcol, char num, char sens){
-    //we have the board and the global tile. Push the tile on the board, move all the tiles, and set the global tile to the tile pushed at the end
-    printf("On a un signal !");
-    if(ligcol == 'L'){
-        printf('On a un signal !');
-        if(sens == 'G'){
-            printf("On a un signal !");
-            //insertion en ligne 2, par la gauche 
-            //Extraire la cellule la plus à gauche de la ligne 2, et la mettre dans une tuile globale temporaire
-            global_tile_temp = plateau[num-1][0];
-            //on décale toutes les cellules de la ligne 2 vers la droite
-            for(int i = 6; i > 0; i--){
-                plateau[num-1][i] = plateau[num-1][i-1];
-            }
-            //on insère la tuile globale tout à droite
-            plateau[num-1][6] = global_tile;
-            
-            //on met à jour la tuile globale
-            global_tile = global_tile_temp;
-        } else if(sens == 'D'){
-            printf("On a un signal !");
-            //insertion en ligne 2, par la droite
-            //Extraire la cellule la plus à droite de la ligne 2, et la mettre dans une tuile globale temporaire
-            global_tile_temp = plateau[num-1][6];
-            //on décale toutes les cellules de la ligne 2 vers la gauche
-            for(int i = 0; i < 6; i++){
-                plateau[num-1][i] = plateau[num-1][i+1];
-            }
-            //on insère la tuile globale tout à gauche
-            plateau[num-1][0] = global_tile;
-
-            //on met à jour la tuile globale
-            global_tile = global_tile_temp;
-        }
-    }else if(ligcol == 'C'){
-        printf("On a un signal !");
-        if(sens == 'H'){
-            printf("On a un signal !");
-            //insertion en colonne 2, par le haut
-            //Extraire la cellule la plus en haut de la colonne 2, et la mettre dans une tuile globale temporaire
-            global_tile_temp = plateau[0][num-1];
-            //on décale toutes les cellules de la colonne 2 vers le bas
-            for(int i = 6; i > 0; i--){
-                plateau[i][num-1] = plateau[i-1][num-1];
-            }
-            //on insère la tuile globale tout en bas
-            plateau[6][num-1] = global_tile;
-
-            //on met à jour la tuile globale
-            global_tile = global_tile_temp;
-        } else if(sens == 'B'){
-            printf("On a un signal !");
-            //insertion en colonne 2, par le bas
-            //Extraire la cellule la plus en bas de la colonne 2, et la mettre dans une tuile globale temporaire
-            global_tile_temp = plateau[6][num-1];
-            //on décale toutes les cellules de la colonne 2 vers le haut
-            for(int i = 0; i < 6; i++){
-                plateau[i][num-1] = plateau[i+1][num-1];
-            }
-            //on insère la tuile globale tout en haut
-            plateau[0][num-1] = global_tile;
-
-            //on met à jour la tuile globale
-            global_tile = global_tile_temp;
-        }
-    }
-
-    //On affiche le nouveau plateau
-    afficher_plateau();
-}
 
 void choix_insertion_cellule(){
     int state = 0;
+    int x, y;
     while(state == 0){
         char choix[3];
 
@@ -659,20 +590,20 @@ void choix_insertion_cellule(){
         afficher_cellule_ligne3(global_tile.type, global_tile.orientation);
 
         //Affichage du menu
-        printf("\n\n\nSélection de l'insertion : \n");
-        printf("1 : Choix de Ligne ou de colonne (L/C) \n");
-        printf("2 : Choix de quelle ligne ou colonne (2/4/6) \n");
-        printf("3 : Choix du sens : Droite/Gauche ou Haut/Bas (D/G ou H/B) \n");
-        printf("Exemple : Insertion sur une ligne, numéro 2, et par la gauche : L2G \n Choix :");
+        printf("\n\nA quelles coordonnées souhaitez-vous insérer la tuile ? (x,y) \n");
+        printf("Entrez x , suivi de y, les deux séparés par une virgule : \n");
+        printf("Exemple : 2,4 \n");
 
+        //Saisie de la tuile
         scanf("%s", choix);
-        //check if the input is correct
-        if (choix[0] == 'L' || choix[0] == 'C'){
-            if (choix[1] == '2' || choix[1] == '4' || choix[1] == '6'){
-                if (choix[2] == 'D' || choix[2] == 'G' || choix[2] == 'H' || choix[2] == 'B'){
-                    state = 1;
-                    insertion_cellule(choix[0], choix[1], choix[2]);
-                }
+
+        //Vérification de la saisie
+        if(choix[1] == ','){
+            x = choix[0] - '0';
+            y = choix[2] - '0';
+            if(x > 0 && x < 8 && y > 0 && y < 8){
+                state = 1;
+                printf("Tuile insérée en %d,%d \n", x, y);
             }
         }
 
@@ -680,6 +611,52 @@ void choix_insertion_cellule(){
             printf("Attention : La saisie est incorrecte ! \n");
         }
     }
+
+    //insertion tuile en x et y
+    //Si L'utilisateur a choisi x = 6,  l'utilisateur l'a alors inséré sur une ligne, si y=6, l'utilisateur l'a inséré sur une colonne
+    // Save the cellule at the opposite side of the plateau
+    cellule opposite_cellule;
+    if (x == 6) {
+        opposite_cellule = plateau[0][y];
+    }
+    else if (x == 0) {
+        opposite_cellule = plateau[6][y];
+    }
+    else if (y == 6) {
+        opposite_cellule = plateau[x][0];
+    }
+    else if (y == 0) {
+        opposite_cellule = plateau[x][6];
+    }
+
+    // Set the global_tile_temp to the opposite cellule
+    global_tile_temp = opposite_cellule;
+
+    // Move all the cells in the row or column
+    if (x == 6 || x == 0) {
+        // Move all the cells in the column
+        for (int i = 6; i > 0; i--) {
+            plateau[i][y] = plateau[i-1][y];
+        }
+    }
+    else if (y == 6 || y == 0) {
+        // Move all the cells in the row
+        for (int i = 6; i > 0; i--) {
+            plateau[x][i] = plateau[x][i-1];
+        }
+    }
+
+    // Insert the global_tile into the plateau
+    plateau[x][y] = global_tile;
+
+    // Update the global_tile with the global_tile_temp
+    global_tile = global_tile_temp;
+
+
+
+
+    //print the new board
+    afficher_plateau();
 }
 
 int main(){
@@ -689,8 +666,6 @@ int main(){
     afficher_plateau();
 
     choix_insertion_cellule();
-
-    afficher_plateau();
     return 0;
 }
 
