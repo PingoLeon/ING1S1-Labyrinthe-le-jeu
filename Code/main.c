@@ -564,9 +564,33 @@ void placer_tresor(int type, int orientation, int x, int y) {
     }
 }
 
-void insertion_cellule(){
-    printf("Veuillez entrer les coordonnées où insérer la cellule : \n");
-    printf("Sur une ligne ou une colonne")
+void insertion_cellule(char ligcol, char num, char sens){
+    //Nothing for now
+}
+
+void choix_insertion_cellule(){
+    int state = 0;
+    while(state == 0){
+        char choix[3];
+        printf("Sélection de l'insertion : \n");
+        printf("1 : Choix de Ligne ou de colonne (L/C) \n");
+        printf("2 : Choix de quelle ligne ou colonne (2/4/6) \n");
+        printf("3 : Choix du sens : Droite/Gauche ou Haut/Bas (D/G ou H/B) \n");
+        printf("Exemple : Insertion sur une ligne, numéro 2, et par la gauche : L2G");
+
+        scanf("%s", choix);
+        //check if the input is correct
+        if (choix[0] == 'L' || choix[0] == 'C'){
+            if (choix[1] == '2' || choix[1] == '4' || choix[1] == '6'){
+                if (choix[2] == 'D' || choix[2] == 'G' || choix[2] == 'H' || choix[2] == 'B'){
+                    state = 1;
+                    insertion_cellule(choix[0], choix[1], choix[2]);
+                }
+            }
+        }
+
+
+    }
 }
 
 int main(){
