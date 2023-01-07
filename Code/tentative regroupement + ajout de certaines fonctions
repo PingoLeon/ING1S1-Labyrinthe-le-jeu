@@ -930,6 +930,69 @@ void menuPrincipal()
 int main () 
 {
 menuPrincipal();
+deroulementPartie();
 return 0; 
 }
+
+//si le joueur tombe sur une case avec un tresor, il le prend et on augmente son score de 1 point et il pioche une nouvelle carte avec un nouveau tresor à chercher à attribuer à un autre joueur
+//si le joueur tombe sur une case avec un tresor deja pris, il ne le prend pas et on ne change pas son score
+//si le joueur tombe sur une case avec un mur, il ne peut pas se deplacer et on ne change pas son score
+//si le joueur tombe sur une case avec un autre joueur, il ne peut pas se deplacer et on ne change pas son score
+//si le joueur tombe sur une case vide, il peut se deplacer et on ne change pas son score
+//le joueur qui trouve tout les tresors attribués par ses cartes et qui retourne sur la case de depart gagne la partie
+
+//fonction qui permet de choisir le nombre de joueurs
+int choixNbJoueurs()
+{
+    int nbJoueurs;
+    printf("Combien de joueurs ? (2 à 4) : ");
+    scanf("%d", &nbJoueurs);
+    return nbJoueurs;
+}
+
+//fonction qui permet de choisir le nombre de cartes par joueur
+int choixNbCartes()
+{
+    int nbCartes = 24;
+    if (nbJoueurs == 2)
+    {
+        nbCartes = 12*piocherCarte();
+    }
+    else if (nbJoueurs == 3)
+    {
+        nbCartes = 8*piocherCarte();
+    }
+    else if (nbJoueurs == 4)
+    {
+        nbCartes = 6*piocherCarte();
+    }
+
+}
+
+//fonction qui permet d'etablir les scores de chaque joueur
+//si un tresor est deja pris, on ne le prend pas et on ne change pas son score
+//si un tresor n'est pas pris et correspond à la carté distribuée, on le prend et on augmente le score du joueur de 1 point
+
+void etablirScore()
+{
+    int score = 0;
+    if (tresorPris == 0)
+    {
+        if (tresor == carte)
+        {
+            score = score + 1;
+        }
+    }
+}
+
+void deroulementPartie()
+{
+    int nbJoueurs = choixNbJoueurs();
+    int nbCartes = choixNbCartes();
+    int score = etablirScore();
+}
+
+
+
+
 
