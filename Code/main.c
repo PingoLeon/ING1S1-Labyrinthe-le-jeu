@@ -537,6 +537,9 @@ void placer_tresor(int type, int orientation, int x, int y) {
     }
 }
 
+void insertion_cellule(){
+    //We have a 50th cell 
+}
 
 int main(){
     init_plateau();
