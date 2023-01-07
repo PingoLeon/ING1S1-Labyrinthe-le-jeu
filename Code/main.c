@@ -52,7 +52,8 @@ typedef struct cellule{
     14 : Jaune
     15 : Blanc
     */
-#define COULEUR_TEXTE 9
+#define COULEUR_TEXTE 15
+#define COULEUR_TEXTE_ALTERNATIVE 12
 #define COULEUR_FOND 0
 
 
@@ -487,26 +488,52 @@ void afficher_cellule_ligne3(int type, int orientation){
 
 void afficher_plateau() {
     setlocale(LC_ALL, "en_US.utf8");
+    //print all numbers of row separated by a tabulation
+    printf("\t   \t2           4           6      \n\n");
     for (int i = 0; i < 7; i++) {
         for(int num_line = 0; num_line < 3; num_line++){
+            if (num_line == 1){
+                if (i%2 != 0){
+                    printf("%d", i+1);
+                }
+            }   
+            printf("\t");
             for (int j = 0; j < 7; j++) {
                 if (num_line == 0){
-                    Color(COULEUR_TEXTE,COULEUR_FOND);
+                    if (plateau[i][j].mobilité == false){
+                        Color(COULEUR_TEXTE_ALTERNATIVE,COULEUR_FOND);
+                    } else {
+                        Color(COULEUR_TEXTE,COULEUR_FOND);
+                    }
                     afficher_cellule_ligne1(plateau[i][j].type, plateau[i][j].orientation);
                     Color(15,0);
                 } else if (num_line == 1){
-                    Color(COULEUR_TEXTE,COULEUR_FOND);
+                    if (plateau[i][j].mobilité == false){
+                        Color(COULEUR_TEXTE_ALTERNATIVE,COULEUR_FOND);
+                    } else {
+                        Color(COULEUR_TEXTE,COULEUR_FOND);
+                    }
                     afficher_cellule_ligne2(plateau[i][j].type, plateau[i][j].orientation);
                     Color(15,0);
                 } else if (num_line == 2){
-                    Color(COULEUR_TEXTE,COULEUR_FOND);
+                    if (plateau[i][j].mobilité == false){
+                        Color(COULEUR_TEXTE_ALTERNATIVE,COULEUR_FOND);
+                    } else {
+                        Color(COULEUR_TEXTE,COULEUR_FOND);
+                    }
                     afficher_cellule_ligne3(plateau[i][j].type, plateau[i][j].orientation);
                     Color(15,0);
                 }
             }
+            if (num_line == 1){
+                if (i%2 != 0){
+                    printf("\t%d", i+1);
+                }
+            }   
             printf("\n");
         }
     }
+    printf("\n\t   \t2           4           6      ");
 }
 
 //Fonction permettant de placer les tresors en fonction de la tuile imposée
@@ -538,7 +565,7 @@ void placer_tresor(int type, int orientation, int x, int y) {
 }
 
 void insertion_cellule(){
-    //We have a 50th cell 
+    //On lines and columns 2 and 6, we ask the user what 
 }
 
 int main(){
