@@ -576,9 +576,11 @@ void placer_tresor(int type, int orientation, int x, int y) {
 
 void insertion_cellule(char ligcol, char num, char sens){
     //we have the board and the global tile. Push the tile on the board, move all the tiles, and set the global tile to the tile pushed at the end
-
+    printf("On a un signal !");
     if(ligcol == 'L'){
+        printf('On a un signal !');
         if(sens == 'G'){
+            printf("On a un signal !");
             //insertion en ligne 2, par la gauche 
             //Extraire la cellule la plus à gauche de la ligne 2, et la mettre dans une tuile globale temporaire
             global_tile_temp = plateau[num-1][0];
@@ -592,6 +594,7 @@ void insertion_cellule(char ligcol, char num, char sens){
             //on met à jour la tuile globale
             global_tile = global_tile_temp;
         } else if(sens == 'D'){
+            printf("On a un signal !");
             //insertion en ligne 2, par la droite
             //Extraire la cellule la plus à droite de la ligne 2, et la mettre dans une tuile globale temporaire
             global_tile_temp = plateau[num-1][6];
@@ -606,7 +609,9 @@ void insertion_cellule(char ligcol, char num, char sens){
             global_tile = global_tile_temp;
         }
     }else if(ligcol == 'C'){
+        printf("On a un signal !");
         if(sens == 'H'){
+            printf("On a un signal !");
             //insertion en colonne 2, par le haut
             //Extraire la cellule la plus en haut de la colonne 2, et la mettre dans une tuile globale temporaire
             global_tile_temp = plateau[0][num-1];
@@ -620,6 +625,7 @@ void insertion_cellule(char ligcol, char num, char sens){
             //on met à jour la tuile globale
             global_tile = global_tile_temp;
         } else if(sens == 'B'){
+            printf("On a un signal !");
             //insertion en colonne 2, par le bas
             //Extraire la cellule la plus en bas de la colonne 2, et la mettre dans une tuile globale temporaire
             global_tile_temp = plateau[6][num-1];
@@ -634,6 +640,9 @@ void insertion_cellule(char ligcol, char num, char sens){
             global_tile = global_tile_temp;
         }
     }
+
+    //On affiche le nouveau plateau
+    afficher_plateau();
 }
 
 void choix_insertion_cellule(){
