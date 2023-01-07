@@ -224,36 +224,44 @@ void maj_compatibilite(){
 }
 
 //Fonction qui génère la dernière tuile excroissante
-void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter){
+void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter, int i_nontresor_counter){
 
     // Seed the random number generator with the current time
     srand(time(NULL));
-
-    // check the values of the counters
-    if(t_counter < 6){
-        // create a T cell with a treasure
-        global_tile.type = T;
-        global_tile.tresor = true;
-        global_tile.type_tresor = rand()%24+1;
-        global_tile.orientation = rand()%4+1;
-    }else if(l_counter < 6){
-        // create an L cell with a treasure
-        global_tile.type = L;
-        global_tile.tresor = true;
-        global_tile.type_tresor = rand()%24+1;
-        global_tile.orientation = rand()%4+1;
-    }else if(l_nontresor_counter < 10){
-        // create an L cell without a treasure
-        global_tile.type = L;
-        global_tile.tresor = false;
-        global_tile.type_tresor = 0;
-        global_tile.orientation = rand()%4+1;
-    }else{
-        // create an I cell without a treasure
-        global_tile.type = I;
-        global_tile.orientation = rand()%2+1;
-        global_tile.tresor = false;
-        global_tile.type_tresor = 0;
+    int choosen = 1;
+    int random = rand()%4+1;
+    while(choosen == 1){    
+        if(random == 1 && t_counter < 6){
+            global_tile.type = T;
+            global_tile.orientation = rand()%4+1;
+            global_tile.tresor = true;
+            global_tile.type_tresor = rand()%24+1;
+            t_counter++;
+            choosen = 0;
+        }else if(random == 2 && l_counter < 6){
+            global_tile.type = L;
+            global_tile.orientation = rand()%4+1;
+            global_tile.tresor = true;
+            global_tile.type_tresor = rand()%24+1;
+            l_counter++;
+            choosen = 0;
+        }else if(random == 3 && l_nontresor_counter < 10){
+            global_tile.type = L;
+            global_tile.orientation = rand()%4+1;
+            global_tile.tresor = false;
+            global_tile.type_tresor = 0;
+            l_nontresor_counter++;
+            choosen = 0;
+        }else if(random == 4 && i_nontresor_counter < 12){
+            global_tile.type = I;
+            global_tile.orientation = rand()%2+1;
+            global_tile.tresor = false;
+            global_tile.type_tresor = 0;
+            i_nontresor_counter++;
+            choosen = 0;
+        }else{
+            random = rand()%4+1;
+        }
     }
 }
 
@@ -334,7 +342,7 @@ void remplissage_plateau(){
     }
 
     // generate the last tile
-    derniere_tuile(t_counter, l_counter, l_nontresor_counter);
+    derniere_tuile(t_counter, l_counter, l_nontresor_counter, i_nontresor_counter);
 }
 
 //Fonction d'initialisation du plateau qui crée un plateau rempli de cellules définies uniquement par leur mobilité
@@ -626,9 +634,6 @@ void insertion_cellule(char ligcol, char num, char sens){
             global_tile = global_tile_temp;
         }
     }
-
-    //display the new board
-    afficher_plateau();
 }
 
 void choix_insertion_cellule(){
@@ -670,12 +675,13 @@ void choix_insertion_cellule(){
 
 int main(){
     //erase the console
-    system("cls");
     init_plateau();
     
     afficher_plateau();
 
     choix_insertion_cellule();
+
+    afficher_plateau();
     return 0;
 }
 
