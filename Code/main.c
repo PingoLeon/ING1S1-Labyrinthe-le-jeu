@@ -62,6 +62,8 @@ cellule plateau[7][7];
 
 //Création d'une cellule global_tile qui va être utilisée pour faire bouger le plateau
 cellule global_tile; 
+cellule global_tile_temp;
+
 
 //initialisation de la couleur du texte et du fond de la console
 void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
@@ -565,18 +567,89 @@ void placer_tresor(int type, int orientation, int x, int y) {
 }
 
 void insertion_cellule(char ligcol, char num, char sens){
-    //Nothing for now
+    //we have the board and the global tile. Push the tile on the board, move all the tiles, and set the global tile to the tile pushed at the end
+
+    if(ligcol == 'L'){
+        if(sens == 'G'){
+            //insertion en ligne 2, par la gauche 
+            //Extraire la cellule la plus à gauche de la ligne 2, et la mettre dans une tuile globale temporaire
+            global_tile_temp = plateau[num-1][0];
+            //on décale toutes les cellules de la ligne 2 vers la droite
+            for(int i = 6; i > 0; i--){
+                plateau[num-1][i] = plateau[num-1][i-1];
+            }
+            //on insère la tuile globale tout à droite
+            plateau[num-1][6] = global_tile;
+            
+            //on met à jour la tuile globale
+            global_tile = global_tile_temp;
+        } else if(sens == 'D'){
+            //insertion en ligne 2, par la droite
+            //Extraire la cellule la plus à droite de la ligne 2, et la mettre dans une tuile globale temporaire
+            global_tile_temp = plateau[num-1][6];
+            //on décale toutes les cellules de la ligne 2 vers la gauche
+            for(int i = 0; i < 6; i++){
+                plateau[num-1][i] = plateau[num-1][i+1];
+            }
+            //on insère la tuile globale tout à gauche
+            plateau[num-1][0] = global_tile;
+
+            //on met à jour la tuile globale
+            global_tile = global_tile_temp;
+        }
+    }else if(ligcol == 'C'){
+        if(sens == 'H'){
+            //insertion en colonne 2, par le haut
+            //Extraire la cellule la plus en haut de la colonne 2, et la mettre dans une tuile globale temporaire
+            global_tile_temp = plateau[0][num-1];
+            //on décale toutes les cellules de la colonne 2 vers le bas
+            for(int i = 6; i > 0; i--){
+                plateau[i][num-1] = plateau[i-1][num-1];
+            }
+            //on insère la tuile globale tout en bas
+            plateau[6][num-1] = global_tile;
+
+            //on met à jour la tuile globale
+            global_tile = global_tile_temp;
+        } else if(sens == 'B'){
+            //insertion en colonne 2, par le bas
+            //Extraire la cellule la plus en bas de la colonne 2, et la mettre dans une tuile globale temporaire
+            global_tile_temp = plateau[6][num-1];
+            //on décale toutes les cellules de la colonne 2 vers le haut
+            for(int i = 0; i < 6; i++){
+                plateau[i][num-1] = plateau[i+1][num-1];
+            }
+            //on insère la tuile globale tout en haut
+            plateau[0][num-1] = global_tile;
+
+            //on met à jour la tuile globale
+            global_tile = global_tile_temp;
+        }
+    }
+
+    //display the new board
+    afficher_plateau();
 }
 
 void choix_insertion_cellule(){
     int state = 0;
     while(state == 0){
         char choix[3];
-        printf("Sélection de l'insertion : \n");
+
+        //Affichage de la tuile globale
+        printf("\n\n\nVoici la tuile en trop : \n");
+        afficher_cellule_ligne1(global_tile.type, global_tile.orientation); 
+        printf("\n");
+        afficher_cellule_ligne2(global_tile.type, global_tile.orientation);
+        printf("\n");
+        afficher_cellule_ligne3(global_tile.type, global_tile.orientation);
+
+        //Affichage du menu
+        printf("\n\n\nSélection de l'insertion : \n");
         printf("1 : Choix de Ligne ou de colonne (L/C) \n");
         printf("2 : Choix de quelle ligne ou colonne (2/4/6) \n");
         printf("3 : Choix du sens : Droite/Gauche ou Haut/Bas (D/G ou H/B) \n");
-        printf("Exemple : Insertion sur une ligne, numéro 2, et par la gauche : L2G");
+        printf("Exemple : Insertion sur une ligne, numéro 2, et par la gauche : L2G \n Choix :");
 
         scanf("%s", choix);
         //check if the input is correct
@@ -589,14 +662,20 @@ void choix_insertion_cellule(){
             }
         }
 
-
+        if(state == 0){
+            printf("Attention : La saisie est incorrecte ! \n");
+        }
     }
 }
 
 int main(){
+    //erase the console
+    system("cls");
     init_plateau();
     
     afficher_plateau();
+
+    choix_insertion_cellule();
     return 0;
 }
 
