@@ -142,109 +142,103 @@ orientation 2 : I -> droite, gauche
 
 //Fonction de mise à jour des compatibilités des cellules en fonction de leurs types et orientations
 void maj_compatibilite(){
-for(int i=0;i<7;i++){
-    for(int j;j<7; j++){
-        if (plateau[i][j].type == T){
-            switch (plateau[i][j].orientation) {
-            case 1:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = 0;
-                plateau[i][j].compatibilite[1] = DROITE;
-                plateau[i][j].compatibilite[2] = BAS;
-                plateau[i][j].compatibilite[3] = GAUCHE;
-                break;
-                
-            case 2:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = HAUT;
-                plateau[i][j].compatibilite[1] = 0;
-                plateau[i][j].compatibilite[2] = BAS;
-                plateau[i][j].compatibilite[3] = GAUCHE;
-                break;
-            case 3:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = HAUT;
-                plateau[i][j].compatibilite[1] = DROITE;
-                plateau[i][j].compatibilite[2] = 0;
-                plateau[i][j].compatibilite[3] = GAUCHE;
-                break;
-
-            case 4:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = HAUT;
-                plateau[i][j].compatibilite[1] = DROITE;
-                plateau[i][j].compatibilite[2] = BAS;
-                plateau[i][j].compatibilite[3] = 0;
-                break;
+    int i, j;
+    for(i=0;i<7;i++){
+        for(j=0;j<7; j++){
+            switch (plateau[i][j].type){
+                case T:
+                    printf("orientation : %d\n", plateau[i][j].orientation);
+                    if(plateau[i][j].orientation == 1){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 0;
+                        plateau[i][j].compatibilite[1] = 1;
+                        plateau[i][j].compatibilite[2] = 1;
+                        plateau[i][j].compatibilite[3] = 1;
+                    }else if(plateau[i][j].orientation == 2){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 1;
+                        plateau[i][j].compatibilite[1] = 0;
+                        plateau[i][j].compatibilite[2] = 1;
+                        plateau[i][j].compatibilite[3] = 1;
+                    }else if(plateau[i][j].orientation == 3){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 1;
+                        plateau[i][j].compatibilite[1] = 1;
+                        plateau[i][j].compatibilite[2] = 0;
+                        plateau[i][j].compatibilite[3] = 1;
+                    }else if(plateau[i][j].orientation == 4){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 1;
+                        plateau[i][j].compatibilite[1] = 1;
+                        plateau[i][j].compatibilite[2] = 1;
+                        plateau[i][j].compatibilite[3] = 0;
+                    }
+                    break;
+                case L:
+                    printf("orientation : %d\n", plateau[i][j].orientation);
+                    if (plateau[i][j].orientation == 1){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 1;
+                        plateau[i][j].compatibilite[1] = 1;
+                        plateau[i][j].compatibilite[2] = 0;
+                        plateau[i][j].compatibilite[3] = 0;
+                    }else if(plateau[i][j].orientation == 2){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 0;
+                        plateau[i][j].compatibilite[1] = 1;
+                        plateau[i][j].compatibilite[2] = 1;
+                        plateau[i][j].compatibilite[3] = 0;
+                    }else if(plateau[i][j].orientation == 3){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 0;
+                        plateau[i][j].compatibilite[1] = 0;
+                        plateau[i][j].compatibilite[2] = 1;
+                        plateau[i][j].compatibilite[3] = 1;
+                    }else if(plateau[i][j].orientation == 4){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 1;
+                        plateau[i][j].compatibilite[1] = 0;
+                        plateau[i][j].compatibilite[2] = 0;
+                        plateau[i][j].compatibilite[3] = 1;
+                    }
+                    break;
+                case I:
+                    printf("orientation : %d\n", plateau[i][j].orientation);
+                    if (plateau[i][j].orientation == 1){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 1;
+                        plateau[i][j].compatibilite[1] = 0;
+                        plateau[i][j].compatibilite[2] = 1;
+                        plateau[i][j].compatibilite[3] = 0;
+                    }else if(plateau[i][j].orientation == 2){
+                        //update the list of compatibilities
+                        plateau[i][j].compatibilite[0] = 0;
+                        plateau[i][j].compatibilite[1] = 1;
+                        plateau[i][j].compatibilite[2] = 0;
+                        plateau[i][j].compatibilite[3] = 1;
+                    }
+                    break;
+                default:
+                    break;
             }
-        }else if(plateau[i][j].type == L){
-            switch (plateau[i][j].orientation) {
-            case 1:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = HAUT;
-                plateau[i][j].compatibilite[1] = DROITE;
-                plateau[i][j].compatibilite[2] = 0;
-                plateau[i][j].compatibilite[3] = 0;
-                break;
-                
-            case 2:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = 0;
-                plateau[i][j].compatibilite[1] = DROITE;
-                plateau[i][j].compatibilite[2] = BAS;
-                plateau[i][j].compatibilite[3] = 0;
-                break;
-            case 3:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = 0;
-                plateau[i][j].compatibilite[1] = 0;
-                plateau[i][j].compatibilite[2] = BAS;
-                plateau[i][j].compatibilite[3] = GAUCHE;
-                break;
 
-            case 4:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = HAUT;
-                plateau[i][j].compatibilite[1] = 0;
-                plateau[i][j].compatibilite[2] = 0;
-                plateau[i][j].compatibilite[3] = GAUCHE;
-                break;
-            }
-        }else if(plateau[i][j].type == I){
-            switch (plateau[i][j].orientation) {
-            case 1:
-                //update the list of compatibilities
-                plateau[i][j].compatibilite[0] = HAUT;
-                plateau[i][j].compatibilite[1] = BAS;
-                plateau[i][j].compatibilite[2] = 0;
-                plateau[i][j].compatibilite[3] = 0;
-                break;
-                
-            case 2:
-                //update the list of compatibilities
+            //Si la cellule est au bord du plateau, on met à jour les compatibilités
+            if(i==0){
                 plateau[i][j].compatibilite[0] = 0;
+            }
+            if(i==6){
                 plateau[i][j].compatibilite[1] = 0;
-                plateau[i][j].compatibilite[2] = DROITE;
-                plateau[i][j].compatibilite[3] = GAUCHE;
-                break;
+            }
+            if(j==0){
+                plateau[i][j].compatibilite[3] = 0;
+            }
+            if(j==6){
+                plateau[i][j].compatibilite[2] = 0;
             }
         }
 
-        //Si la cellule est au bord du plateau, on met à jour les compatibilités
-        if(i==0){
-            plateau[i][j].compatibilite[0] = 0;
-        }
-        if(i==6){
-            plateau[i][j].compatibilite[2] = 0;
-        }
-        if(j==0){
-            plateau[i][j].compatibilite[3] = 0;
-        }
-        if(j==6){
-            plateau[i][j].compatibilite[1] = 0;
-        }
+        
     }
-}
 }
 
 //Fonction qui génère la dernière tuile excroissante
@@ -371,20 +365,20 @@ derniere_tuile(t_counter, l_counter, l_nontresor_counter, i_nontresor_counter);
 
 //Fonction d'initialisation du plateau qui crée un plateau rempli de cellules définies uniquement par leur mobilité
 void init_plateau(){
-//création d'un plateau aléatoire : 
-int i,j;
-for(i=0;i<7;i++){
-    for(j=0;j<7;j++){
-        plateau[i][j].x = i;
-        plateau[i][j].y = j;
-        plateau[i][j].mobilité = (i%2 == 0 && j%2 == 0) ? false : true;  
+    //création d'un plateau aléatoire : 
+    int i,j;
+    for(i=0;i<7;i++){
+        for(j=0;j<7;j++){
+            plateau[i][j].x = i;
+            plateau[i][j].y = j;
+            plateau[i][j].mobilité = (i%2 == 0 && j%2 == 0) ? false : true;  
+        }
     }
-}
-//Appel de la fonction de correction du plateau qui va remplir les cellules inamovibles et les cellules amovibles, et créer la dernière cellule excroissante 
-remplissage_plateau();
+    //Appel de la fonction de correction du plateau qui va remplir les cellules inamovibles et les cellules amovibles, et créer la dernière cellule excroissante 
+    remplissage_plateau();
 
-//Appel de la fonction de correction des compatibilités qui va remplir les compatibilités des cellules
-maj_compatibilite();
+    //Appel de la fonction de correction des compatibilités qui va remplir les compatibilités des cellules
+    maj_compatibilite();
 }
 
 void fill(int nb){
@@ -675,9 +669,94 @@ void insertion_cellule(){
 
 //Fonction permettant le mouvement de pions
 void mouvement_pion(int nbpion){
-    int x, y;
-    //Affichage du menu
-    printf("\n\nVous êtes le pion %d et vous êtes en (%d,%d) \n", nbpion+1, liste_pion[nbpion].x, liste_pion[nbpion].y);
+    bool state = false;
+    while(state == false){
+        //Affichage du menu
+        printf("\n\nVous êtes le pion %d et vous êtes en (%d,%d) \n", nbpion+1, liste_pion[nbpion].x, liste_pion[nbpion].y);
+        int x = liste_pion[nbpion].x;
+        int y = liste_pion[nbpion].y;
+        //verify if the cell the pion is on is compatible with the cell the pion wants to go
+        printf("Souhaitez-vous aller en haut (1), à droite (2), en bas (3) ou à gauche (4) ou arrêter de bouger (5) ? \n");
+        int choix;
+        scanf("%d", &choix);
+        switch (choix){
+            case 1:
+                //if the cell the pion is on is on the top border of the board, it can't go up
+                if(liste_pion[nbpion].x == 0){
+                    printf("Le mouvement est impossible car vous êtes sur une bordure\n");
+                    break;
+                }else{
+                    printf("x = %d, y = %d, x-1 = %d, y = %d, plateau[x][y].compatibilite[0] = %d, plateau[x-1][y].compatibilite[1] = %d\n", x, y, x-1, y, plateau[x][y].compatibilite[0], plateau[x-1][y].compatibilite[1]);
+                    if(plateau[x][y].compatibilite[0] == 1 && plateau[x-1][y].compatibilite[2] == 1){
+                        liste_pion[nbpion].x = x-1;
+                        liste_pion[nbpion].y = y;
+                        afficher_plateau();
+                    }
+                    else{
+                        printf("Le mouvement est impossible\n");
+                    }
+                }
+                break;
+
+            case 2:
+                //if the cell the pion is on is on the right border of the board, it can't go right
+                if(liste_pion[nbpion].y == 6){
+                    printf("Le mouvement est impossible car vous êtes sur une bordure\n");
+                    break;
+                }else{
+                    printf("x = %d, y = %d, x = %d, y+1 = %d, plateau[x][y].compatibilite[2] = %d, plateau[x][y+1].compatibilite[3] = %d\n", x, y, x, y+1, plateau[x][y].compatibilite[2], plateau[x][y+1].compatibilite[3]);
+                    if(plateau[x][y].compatibilite[1] == 1 && plateau[x][y+1].compatibilite[3] == 1){
+                        liste_pion[nbpion].x = x;
+                        liste_pion[nbpion].y = y+1;
+                        afficher_plateau();
+                    }
+                    else{
+                        printf("Le mouvement est impossible\n");
+                    }
+                }
+                break;
+            case 3:
+                //if the cell the pion is on is on the bottom border of the board, it can't go down
+                if(liste_pion[nbpion].x == 6){
+                    printf("Le mouvement est impossible car vous êtes sur une bordure\n");
+                    break;
+                }else{
+                    printf("x = %d, y = %d, x+1 = %d, y = %d, plateau[x][y].compatibilite[1] = %d, plateau[x+1][y].compatibilite[0] = %d\n", x, y, x+1, y, plateau[x][y].compatibilite[1], plateau[x+1][y].compatibilite[0]);
+                    if(plateau[x][y].compatibilite[2] == 1 && plateau[x+1][y].compatibilite[0] == 1){
+                        liste_pion[nbpion].x = x+1;
+                        liste_pion[nbpion].y = y;
+                        afficher_plateau();
+                    }
+                    else{
+                        printf("Le mouvement est impossible\n");
+                    }
+                }
+                break;
+            case 4:
+                //if the cell the pion is on is on the left border of the board, it can't go left
+                if(liste_pion[nbpion].y == 0){
+                    printf("Le mouvement est impossible car vous êtes sur une bordure\n");
+                    break;
+                }else{
+                    printf("x = %d, y = %d, x = %d, y-1 = %d, plateau[x][y].compatibilite[3] = %d, plateau[x][y-1].compatibilite[2] = %d\n", x, y, x, y-1, plateau[x][y].compatibilite[3], plateau[x][y-1].compatibilite[2]);
+                    if(plateau[x][y].compatibilite[3] == 1 && plateau[x][y-1].compatibilite[1] == 1){
+                        liste_pion[nbpion].x = x;
+                        liste_pion[nbpion].y = y-1;
+                        afficher_plateau();
+                    }
+                    else{
+                        printf("Le mouvement est impossible\n");
+                    }
+                }
+                break;
+            case 5:
+                state = true;
+                break;
+            default:
+                printf("Attention : La saisie est incorrecte ! \n");
+                break;
+        }
+    }
 }
 
 
@@ -775,6 +854,7 @@ void Boucle(){
 
 
 void init_pions(){
+    //On initialise les pions
     // On crée un tableau de 4 personnages
     character characters []= {"Asterix: vert", "Obelix: bleu", "Panoramix: rouge", "Idefix: blanc"};
 
