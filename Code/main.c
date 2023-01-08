@@ -499,7 +499,7 @@ void afficher_cellule_ligne3(int type, int orientation){
 void afficher_plateau() {
     setlocale(LC_ALL, "en_US.utf8");
     //print all numbers of row separated by a tabulation
-    printf("\t   \t2           4           6      \n\n");
+    printf("x  y--\t   \t2           4           6      \n|\n");
     for (int i = 0; i < 7; i++) {
         for(int num_line = 0; num_line < 3; num_line++){
             if (num_line == 1){
@@ -575,7 +575,7 @@ void placer_tresor(int type, int orientation, int x, int y) {
 }
 
 
-void choix_insertion_cellule(){
+void insertion_cellule(){
     int state = 0;
     int x, y;
     while(state == 0){
@@ -595,13 +595,12 @@ void choix_insertion_cellule(){
         printf("Exemple : 2,4 \n");
 
         //Saisie de la tuile
-        scanf("%s", choix);
-
+        printf("Entrez x , suivi de y, le tout coupé par un slash:");
+        scanf("%d/%d", &x, &y);
         //Vérification de la saisie
-        if(choix[1] == ','){
-            x = choix[0] - '0';
-            y = choix[2] - '0';
-            if(x > 0 && x < 8 && y > 0 && y < 8){
+        if(x > 0 && x < 8 && y > 0 && y < 8){
+            //One of the two coordinates is either 0 or 6 we must verify it
+            if(x == 0 || x == 6 || y == 0 || y == 6){
                 state = 1;
                 printf("Tuile insérée en %d,%d \n", x, y);
             }
@@ -633,13 +632,22 @@ void choix_insertion_cellule(){
     global_tile_temp = opposite_cellule;
 
     // Move all the cells in the row or column
-    if (x == 6 || x == 0) {
+    if (x == 6) {
         // Move all the cells in the column
         for (int i = 6; i > 0; i--) {
             plateau[i][y] = plateau[i-1][y];
         }
-    }
-    else if (y == 6 || y == 0) {
+    }else if(x == 0){
+        // Move all the cells in the column
+        for (int i = 0; i < 6; i++) {
+            plateau[i][y] = plateau[i+1][y];
+        }
+    }else if (y == 6) {
+        // Move all the cells in the row
+        for (int i = 0; i < 6; i++) {
+            plateau[x][i] = plateau[x][i+1];
+        }
+    }else if (y == 0) {
         // Move all the cells in the row
         for (int i = 6; i > 0; i--) {
             plateau[x][i] = plateau[x][i-1];
@@ -652,9 +660,6 @@ void choix_insertion_cellule(){
     // Update the global_tile with the global_tile_temp
     global_tile = global_tile_temp;
 
-
-
-
     //print the new board
     afficher_plateau();
 }
@@ -664,8 +669,8 @@ int main(){
     init_plateau();
     
     afficher_plateau();
-
-    choix_insertion_cellule();
+    
+    insertion_cellule();
     return 0;
 }
 
