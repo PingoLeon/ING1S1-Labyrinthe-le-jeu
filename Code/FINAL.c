@@ -63,6 +63,7 @@ cellule plateau[7][7];
 //Création d'une cellule global_tile qui va être utilisée pour faire bouger le plateau
 cellule global_tile; 
 cellule global_tile_temp;
+int nbJoueurs = 0;
 
 
 //initialisation de la couleur du texte et du fond de la console
@@ -663,7 +664,7 @@ void insertion_cellule(){
 }
 
 
-void Boucle(nbJoueurs){
+void Boucle(){
     //Tout est initialisé, c'est là la boucle de jeu pour lancer un tour et ainsi de suite
     //Boucle while du jeu, répétée tant que les joueurs veulent jouer
     //Boucle while d'un tour de joueur, répétée nbJoueurs fois, et ensuite on recommence
@@ -671,11 +672,12 @@ void Boucle(nbJoueurs){
     while(Jeu == 1){
         //Boucle while d'un tour de joueur, répétée nbJoueurs fois, et ensuite on recommence
         for(int i = 0; i < nbJoueurs; i++){
+            printf("\n\n\nC'est au tour du joueur %d !\n", i+1);
             //Afficher le plateau
             afficher_plateau();
 
             //Montrer la carte du gars
-            afficher_carte();
+            //afficher_carte();
 
             //Lui proposer d'insérer une pièce ou non
             int choix = 0;
@@ -686,9 +688,11 @@ void Boucle(nbJoueurs){
                     insertion_cellule();
                     printf("Voici le nouveau labyrinthe : \n\n");
                     afficher_plateau();
+                    choix = 1;
                 }
                 else if(choix == 0){
                     printf("Vous avez choisi de ne pas insérer de tuile !\n");
+                    choix = 1;
                 }
                 else{
                     printf("Attention : La saisie est incorrecte ! \n");
@@ -702,12 +706,14 @@ void Boucle(nbJoueurs){
                 scanf("%d", &choix);
                 if(choix == 1){
                     //Bouger le gars
-                    bouger_gars();
+                    //bouger_gars();
                     printf("Voici le nouveau labyrinthe : \n\n");
                     afficher_plateau();
+                    choix = 1;
                 }
                 else if(choix == 0){
                     printf("Vous avez choisi de ne pas bouger !\n");
+                    choix = 1;
                 }
                 else{
                     printf("Attention : La saisie est incorrecte ! \n");
@@ -734,7 +740,7 @@ void Boucle(nbJoueurs){
     }
 
     //On retourne au menu principal
-    MenuPrincipal();
+    menuPrincipal();
 }
 
 // Structure qui permet de créer un pion
@@ -754,83 +760,56 @@ struct Pion pion2 = {2, 0, 6, '*'};
 struct Pion pion3 = {3, 6, 0, '*'};
 struct Pion pion4 = {4, 6, 6, '*'};
 
-// Fonction qui initialise les joueurs et leur attribue un pion
-int ChoixPions(int nbJoueurs){
-    int choixPions; 
-    char *pions [] = {"Asterix", "Obelix", "Idefix", "Panoramix"};
-    while (nbJoueurs != 0){
-        printf("Joueur %d, choisissez votre pion : \n", nbJoueurs);
-        printf("1: Asterix\n2: Obelix\n3: Idefix\n4: Panoramix\n");
-        scanf("%d", &choixPions);
-        switch(choixPions){
-            case 1:
-                printf("\rVous avez choisi Asterix!\nVous avez le pion vert.\n"); 
-            break;
-
-            case 2:
-                printf("Vous avez choisi Obelix!\nVous avez le pion bleu.\n");
-            break;
-
-            case 3:
-                printf("Vous avez choisi Idefix!\nVous avez le pion blanc.\n");
-            break;
-
-            case 4:
-                printf("Vous avez choisi Panoramix!\nVous avez le pion rouge.\n");
-            break;
-
-            default:
-                printf("Vous n'avez pas choisi un pion valide.\n");
-            break;
-        }
-        nbJoueurs--;
-    }
-}
-
 typedef struct character {
 char name[20];
 } character;
 
 
-void init_pions()
-{
-// On crée un tableau de 4 personnages
-character characters []= {"Asterix: vert", "Obelix: bleu", "Panoramix: rouge", "Idefix: blanc"};
+void init_pions(){
+    // On crée un tableau de 4 personnages
+    character characters []= {"Asterix: vert", "Obelix: bleu", "Panoramix: rouge", "Idefix: blanc"};
 
-// On crée un tableau de 4 points d'entrée (pointeurs) de personnages
-character* players[4];
+    // On crée un tableau de 4 points d'entrée (pointeurs) de personnages
+    character* players[4];
+    //Demander combien de joueurs
+    while(nbJoueurs < 2 || nbJoueurs > 4){
+        printf("Combien de joueurs ? (2 à 4) : ");
+        scanf("%d", &nbJoueurs);
+        if(nbJoueurs < 2 || nbJoueurs > 4){
+            printf("Attention : La saisie est incorrecte ! \n");
+        }
+    }
+    // On demande à chaque joueur de choisir un personnage
+    for (int i = 0; i < nbJoueurs; i++) {
+        printf("Joueur %d, choisissez un personnage :\n", i + 1);
+        for (int j = 0; j < 4; j++) {
+        printf("%d) %s\n", j + 1, characters[j].name);
+        }
+        printf("\nVotre choix : ");
 
-// On demande à chaque joueur de choisir un personnage
-for (int i = 0; i < 4; i++) {
-printf("Joueur %d, choisissez un personnage :\n", i + 1);
-for (int j = 0; j < 4; j++) {
-  printf("%d) %s\n", j + 1, characters[j].name);
-}
-printf("\nVotre choix : ");
+        int choice;
+        scanf("%d", &choice);
+        printf("%d\n", choice);
+        printf("\n\n");
 
-int choice;
-scanf("%d", &choice);
-printf("%d\n", choice);
-printf("\n\n");
+        // On vérifie que le personnage n'a pas déjà été choisi par un autre joueur
+        int available = 1;
+        for (int j = 0; j < i; j++) {
+            if (players[j] == &characters[choice - 1]) {
+                available = 0;
+                break;
+            }
+        }
 
-// On vérifie que le personnage n'a pas déjà été choisi par un autre joueur
-int available = 1;
-for (int j = 0; j < i; j++) {
-  if (players[j] == &characters[choice - 1]) {
-    available = 0;
-    break;
-  }
-}
-
-if (available) {
-  // Si le personnage n'a pas été choisi, on affecte le pointeur correspondant au joueur courant
-  players[i] = &characters [choice - 1];
-} else {
-  // Sinon, on demande au joueur de choisir un autre personnage
-  printf("Ce personnage a déjà été choisi, choisissez-en un autre.\n");
-  i--;
-}
-  }
+        if (available == 1) {
+            // Si le personnage n'a pas été choisi, on affecte le pointeur correspondant au joueur courant
+            players[i] = &characters [choice - 1];
+        } else {
+            // Sinon, on demande au joueur de choisir un autre personnage
+            printf("Ce personnage a déjà été choisi, choisissez-en un autre.\n");
+            i--;
+        }
+    }
 }
 
 // CARTE TRESOR
@@ -911,7 +890,7 @@ void initialisationPartie ()
 {
     init_plateau();
     init_pions();
-    CommencerPartie();
+    Boucle();
 }
 
 // Fonction qui affiche les règles du jeu
