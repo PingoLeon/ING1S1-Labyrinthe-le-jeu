@@ -735,7 +735,6 @@ void Boucle(nbJoueurs){
 
     //On retourne au menu principal
     MenuPrincipal();
-
 }
 
 // Structure qui permet de créer un pion
