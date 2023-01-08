@@ -25,6 +25,28 @@ bool tresor;
 int type_tresor;
 }cellule;
 
+// Structure qui permet de créer un pion
+struct Pion
+{
+    int numero;
+    int x;
+    int y;
+    int numeroPerso;
+    char symbole;
+    bool estEnTrainDeJouer;
+    char cartes[12];
+};
+
+// On génère les 4 pions possibles
+struct Pion pion1 = {1, 0, 0, '*', true};
+struct Pion pion2 = {2, 0, 6, '*', true};
+struct Pion pion3 = {3, 6, 0, '*', true};
+struct Pion pion4 = {4, 6, 6, '*', true};
+
+typedef struct character {
+char name[20];
+} character;
+
 //Définition des attibuts de la structure cellule
 #define T 1
 #define L 2
@@ -405,6 +427,53 @@ void fill(int nb){
     }
 }
 
+void fill_pion(int nb, int x, int y){
+    //each text has 3 characters possible, being filled with double space, or a full block (u2588)
+    //We need all combinations of those 3 characters to fill the line
+    char pion[8] = " ";
+    int isTherePion = 0;
+    if ((pion1.x == x && pion1.y == y) || (pion2.x == x && pion2.y == y) || (pion3.x == x && pion3.y == y) || (pion4.x == x && pion4.y == y)){
+        isTherePion = 1;
+    }
+
+    switch (nb)
+    {
+    case 0:
+        printf("      "); //000
+        break;
+    case 1:
+        printf("    \u2588\u2588"); //001
+        break;
+
+    case 2:
+        printf("  \u2588\u2588  "); //010
+        break;
+
+    case 3:
+        printf("  \u2588\u2588\u2588\u2588"); //011
+        break;
+
+    case 4:
+        printf("\u2588\u2588    "); //100
+        break;
+
+    case 5:
+        printf("\u2588\u2588  \u2588\u2588"); //101
+        break;
+
+    case 6:
+        printf("\u2588\u2588\u2588\u2588  "); //110
+        break;
+
+    case 7:
+        printf("\u2588\u2588\u2588\u2588\u2588\u2588"); //111
+        break;
+
+    default:
+        break;
+    }
+}
+
 void afficher_cellule_ligne1(int type, int orientation) {
     if (type == T) {
         if (orientation == 1){
@@ -435,32 +504,33 @@ void afficher_cellule_ligne1(int type, int orientation) {
     }
 }
 
-void afficher_cellule_ligne2(int type, int orientation){
+void afficher_cellule_ligne2(int type, int orientation, int x, int y){
+    //if a pion is on the cell, if pion.x == x and pion.y == y, then we print the pion
     if (type == T) {
         if (orientation == 1){
-            fill(0);
+            fill_pion(0,x,y);
         } else if (orientation == 2){
-            fill(1);
+            fill_pion(1,x,y);
         } else if (orientation == 3){
-            fill(0);
+            fill_pion(0,x,y);
         } else if (orientation == 4){
-            fill(4);
+            fill_pion(4,x,y);
         }
     }else if (type == L) {
         if (orientation == 1){
-            fill(4);
+            fill_pion(4,x,y);
         }else if (orientation == 2){
-            fill(4);
+            fill_pion(4,x,y);
         } else if(orientation == 3){
-            fill(1);
+            fill_pion(1,x,y);
         } else if (orientation == 4){
-            fill(1);
+            fill_pion(1,x,y);
         }
     } else if (type == I) {
         if (orientation == 1){
-            fill(5);
+            fill_pion(5,x,y);
         } else if (orientation == 2){
-            fill(0);
+            fill_pion(0,x,y);
         }
     }
 }
@@ -525,7 +595,7 @@ void afficher_plateau() {
                     } else {
                         Color(COULEUR_TEXTE,COULEUR_FOND);
                     }
-                    afficher_cellule_ligne2(plateau[i][j].type, plateau[i][j].orientation);
+                    afficher_cellule_ligne2(plateau[i][j].type, plateau[i][j].orientation, plateau[i][j].x, plateau[i][j].y);
                     Color(15,0);
                 } else if (num_line == 2){
                     if (plateau[i][j].mobilité == false){
@@ -558,25 +628,6 @@ void afficher_plateau() {
 //il faut 6T avec tresor
 //il faut 12 I sans tresor
 
-void placer_tresor(int type, int orientation, int x, int y) {
-    if (plateau[x][y].tresor == true) {
-        if (type == T) {
-            if (x != 0 && x != 7 && y != 0 && y != 7) {
-                plateau[x][y].type = T;
-                plateau[x][y].orientation = orientation;
-                plateau[x][y].tresor = 1;
-            }
-        } else if (type == L) {
-            if (x != 0 && x != 7 && y != 0 && y != 7) {
-                plateau[x][y].type = L;
-                plateau[x][y].orientation = orientation;
-                plateau[x][y].tresor = 1;
-            }
-        }
-    }
-}
-
-
 void insertion_cellule(){
     int state = 0;
     int x, y;
@@ -587,7 +638,7 @@ void insertion_cellule(){
         printf("\n\n\nVoici la tuile en trop : \n");
         afficher_cellule_ligne1(global_tile.type, global_tile.orientation); 
         printf("\n");
-        afficher_cellule_ligne2(global_tile.type, global_tile.orientation);
+        afficher_cellule_ligne2(global_tile.type, global_tile.orientation, -1, -1);
         printf("\n");
         afficher_cellule_ligne3(global_tile.type, global_tile.orientation);
 
@@ -676,9 +727,23 @@ void Boucle(){
             //Afficher le plateau
             afficher_plateau();
 
-            //Montrer la carte du gars
-            //afficher_carte();
-
+            //Montrer la carte à chercher : montrer le premier élément de la liste de trésors du joueur : les trésors sont représentés par des lettres
+            printf("\n\n\nDans ta liste de cartes à chercher, tu dois d'abord trouver : \n");
+            switch (i+1){
+                case 1:
+                    printf("Trésor : %c\n", pion1.cartes[0]);
+                    break;
+                case 2:
+                    printf("Trésor : %c\n", pion2.cartes[0]);
+                    break;
+                case 3:
+                    printf("Trésor : %c\n", pion3.cartes[0]);
+                    break;
+                case 4:
+                    printf("Trésor : %c\n", pion4.cartes[0]);
+                    break;
+                
+            }
             //Lui proposer d'insérer une pièce ou non
             int choix = 0;
             while(choix == 0){
@@ -706,8 +771,7 @@ void Boucle(){
                 scanf("%d", &choix);
                 if(choix == 1){
                     //Bouger le gars
-                    //bouger_gars();
-                    printf("Voici le nouveau labyrinthe : \n\n");
+                    //mouvement_pion(i+1);
                     afficher_plateau();
                     choix = 1;
                 }
@@ -740,29 +804,8 @@ void Boucle(){
     }
 
     //On retourne au menu principal
-    menuPrincipal();
+    main();
 }
-
-// Structure qui permet de créer un pion
-struct Pion
-{
-    int numero;
-    int x;
-    int y;
-    int numeroPerso;
-    char symbole;
-    bool estEnTrainDeJouer;
-};
-
-// On génère les 4 pions possibles
-struct Pion pion1 = {1, 0, 0, '*'};
-struct Pion pion2 = {2, 0, 6, '*'};
-struct Pion pion3 = {3, 6, 0, '*'};
-struct Pion pion4 = {4, 6, 6, '*'};
-
-typedef struct character {
-char name[20];
-} character;
 
 
 void init_pions(){
@@ -779,9 +822,25 @@ void init_pions(){
             printf("Attention : La saisie est incorrecte ! \n");
         }
     }
+
+    //set Pion.estEnTrainDeJouer = false if numero > nbJoueurs
+    if(nbJoueurs == 2){
+        pion3.estEnTrainDeJouer = false;
+        pion3.x = -1;
+        pion3.y = -1;
+        pion4.estEnTrainDeJouer = false;
+        pion4.x = -1;
+        pion4.y = -1;
+
+    }
+    else if(nbJoueurs == 3){
+        pion4.estEnTrainDeJouer = false;
+        pion4.x = -1;
+        pion4.y = -1;
+    }
     // On demande à chaque joueur de choisir un personnage
     for (int i = 0; i < nbJoueurs; i++) {
-        printf("Joueur %d, choisissez un personnage :\n", i + 1);
+        printf("\nJoueur %d, choisissez un personnage :\n", i + 1);
         for (int j = 0; j < 4; j++) {
         printf("%d) %s\n", j + 1, characters[j].name);
         }
@@ -884,12 +943,42 @@ void carteTresor ()
     carteDeDos();
 }
 
+void distribuerCartes() {
+    char tresors[24] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V'};
+    int countCardJoueur1 = 0;
+    int countCardJoueur2 = 0;
+    int countCardJoueur3 = 0;
+    int countCardJoueur4 = 0;
+    //Attributes the cards to the players randomly depending on the number of players. Example : 4 players = 6 cards each, Append to the player's hand array the card's name (A, B, C, etc.)
+    //each player is represented by struct pion and his hand is represented by pion.carte[12] (12 for max number of cards in player's hand)
+    //parse the array of tresors and assign the cards to a random player, then remove the card from the array of tresors 
+    //Take in count the number of players (if pion.estEnTrainDeJouer == true, he's playing)
+    for (int i = 0; i < 24; i++) {
+        srand(time(0));
+        int k = rand() % 24;
+        if (countCardJoueur1 < (24 / nbJoueurs)){
+            pion1.cartes[countCardJoueur1] = tresors[k];
+            countCardJoueur1++;
+        } else if (countCardJoueur2 < (24 / nbJoueurs)) {
+            pion2.cartes[countCardJoueur2] = tresors[k];
+            countCardJoueur2++;
+        } else if (countCardJoueur3 < (24 / nbJoueurs) && nbJoueurs == 3) {
+            pion3.cartes[countCardJoueur3] = tresors[k];
+            countCardJoueur3++;
+        } else if (countCardJoueur4 < (24 / nbJoueurs) && nbJoueurs == 4) {
+            pion4.cartes[countCardJoueur4] = tresors[k];
+            countCardJoueur4++;
+        }
+        tresors[k] = ' ';
+    }
+}
 
 // Fonction qui permet de mettre en place le déroulement de la partie
 void initialisationPartie () 
 {
     init_plateau();
     init_pions();
+    distribuerCartes();
     Boucle();
 }
 
@@ -1023,8 +1112,7 @@ void menuPrincipal()
     }
 } 
 
-int main () 
-{
-menuPrincipal();
-return 0; 
+int main (){
+    menuPrincipal();
+    return 0; 
 }

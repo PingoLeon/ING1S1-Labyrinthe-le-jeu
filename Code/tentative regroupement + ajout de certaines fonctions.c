@@ -886,7 +886,9 @@ void Quitter()
     printf("Merci d'avoir joué au Labyrinth !\n");
     exit(0);
 }
-tentative regroupement + ajout de certaines fonctions  
+
+
+// tentative regroupement + ajout de certaines fonctions  
 
 // Menu principal du jeu
 void menuPrincipal()
