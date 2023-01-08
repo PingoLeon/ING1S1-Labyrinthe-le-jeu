@@ -226,43 +226,43 @@ for(int i=0;i<7;i++){
 //Fonction qui génère la dernière tuile excroissante
 void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter, int i_nontresor_counter){
 
-// Seed the random number generator with the current time
-srand(time(NULL));
-int choosen = 1;
-int random = rand()%4+1;
-while(choosen == 1){    
-    if(random == 1 && t_counter < 6){
-        global_tile.type = T;
-        global_tile.orientation = rand()%4+1;
-        global_tile.tresor = true;
-        global_tile.type_tresor = rand()%24+1;
-        t_counter++;
-        choosen = 0;
-    }else if(random == 2 && l_counter < 6){
-        global_tile.type = L;
-        global_tile.orientation = rand()%4+1;
-        global_tile.tresor = true;
-        global_tile.type_tresor = rand()%24+1;
-        l_counter++;
-        choosen = 0;
-    }else if(random == 3 && l_nontresor_counter < 10){
-        global_tile.type = L;
-        global_tile.orientation = rand()%4+1;
-        global_tile.tresor = false;
-        global_tile.type_tresor = 0;
-        l_nontresor_counter++;
-        choosen = 0;
-    }else if(random == 4 && i_nontresor_counter < 12){
-        global_tile.type = I;
-        global_tile.orientation = rand()%2+1;
-        global_tile.tresor = false;
-        global_tile.type_tresor = 0;
-        i_nontresor_counter++;
-        choosen = 0;
-    }else{
-        random = rand()%4+1;
+    // Seed the random number generator with the current time
+    srand(time(NULL));
+    int choosen = 1;
+    int random = rand()%4+1;
+    while(choosen == 1){    
+        if(random == 1 && t_counter < 6){
+            global_tile.type = T;
+            global_tile.orientation = rand()%4+1;
+            global_tile.tresor = true;
+            global_tile.type_tresor = rand()%24+1;
+            t_counter++;
+            choosen = 0;
+        }else if(random == 2 && l_counter < 6){
+            global_tile.type = L;
+            global_tile.orientation = rand()%4+1;
+            global_tile.tresor = true;
+            global_tile.type_tresor = rand()%24+1;
+            l_counter++;
+            choosen = 0;
+        }else if(random == 3 && l_nontresor_counter < 10){
+            global_tile.type = L;
+            global_tile.orientation = rand()%4+1;
+            global_tile.tresor = false;
+            global_tile.type_tresor = 0;
+            l_nontresor_counter++;
+            choosen = 0;
+        }else if(random == 4 && i_nontresor_counter < 12){
+            global_tile.type = I;
+            global_tile.orientation = rand()%2+1;
+            global_tile.tresor = false;
+            global_tile.type_tresor = 0;
+            i_nontresor_counter++;
+            choosen = 0;
+        }else{
+            random = rand()%4+1;
+        }
     }
-}
 }
 
 //Fonction de remplissage du plateau

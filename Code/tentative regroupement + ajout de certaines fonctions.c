@@ -905,22 +905,22 @@ void menuPrincipal()
             printf("\nNouvelle Partie\n");
             initialisationPartie();
             break;
-        
+
         case 2:
             printf("\nCharger une partie\n");
             ChargerPartie();
-          break;
-        
+            break;
+
         case 3:
             printf("\nAfficher les règles / crédits\n");
             Regles();
             break;
-        
+
         case 4:
             printf("\nQuitter\n");
             Quitter();
             break;
-        
+
         default:
             printf("Erreur");
             break;
