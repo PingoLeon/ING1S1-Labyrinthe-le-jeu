@@ -596,7 +596,7 @@ void insertion_cellule(){
 
         //Saisie de la tuile
         printf("Entrez x , suivi de y, le tout coupé par un slash:");
-        scanf("%d/%d", &x, &y);
+        scanf("%d,%d", &x, &y);
         //Vérification de la saisie
         if(x > 0 && x < 8 && y > 0 && y < 8){
             //One of the two coordinates is either 0 or 6 we must verify it
