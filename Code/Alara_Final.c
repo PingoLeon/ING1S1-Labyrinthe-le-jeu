@@ -53,7 +53,7 @@ int type_tresor;
 15 : Blanc
 */
 #define COULEUR_TEXTE 15
-#define COULEUR_TEXTE_ALTERNATIVE 12
+#define COULEUR_BLOC_IMMOBILE 12
 #define COULEUR_FOND 0
 
 
@@ -512,7 +512,7 @@ void afficher_plateau() {
             for (int j = 0; j < 7; j++) {
                 if (num_line == 0){
                     if (plateau[i][j].mobilité == false){
-                        Color(COULEUR_TEXTE_ALTERNATIVE,COULEUR_FOND);
+                        Color(COULEUR_BLOC_IMMOBILE,COULEUR_FOND);
                     } else {
                         Color(COULEUR_TEXTE,COULEUR_FOND);
                     }
@@ -520,7 +520,7 @@ void afficher_plateau() {
                     Color(15,0);
                 } else if (num_line == 1){
                     if (plateau[i][j].mobilité == false){
-                        Color(COULEUR_TEXTE_ALTERNATIVE,COULEUR_FOND);
+                        Color(COULEUR_BLOC_IMMOBILE,COULEUR_FOND);
                     } else {
                         Color(COULEUR_TEXTE,COULEUR_FOND);
                     }
@@ -528,7 +528,7 @@ void afficher_plateau() {
                     Color(15,0);
                 } else if (num_line == 2){
                     if (plateau[i][j].mobilité == false){
-                        Color(COULEUR_TEXTE_ALTERNATIVE,COULEUR_FOND);
+                        Color(COULEUR_BLOC_IMMOBILE,COULEUR_FOND);
                     } else {
                         Color(COULEUR_TEXTE,COULEUR_FOND);
                     }
