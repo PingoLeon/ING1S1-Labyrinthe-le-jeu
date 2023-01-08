@@ -945,9 +945,8 @@ void menuPrincipal()
 {
     int choix;
     printf(" 1 - Nouvelle Partie\n");
-    printf(" 2 - Charger une partie\n");
-    printf(" 3 - Afficher les règles / crédits\n");
-    printf(" 4 - Quitter\n");
+    printf(" 2 - Afficher les règles / crédits\n");
+    printf(" 3 - Quitter\n");
     printf("\n Votre choix : ");
     scanf("%d", &choix);
 
@@ -959,16 +958,11 @@ void menuPrincipal()
             break;
         
         case 2:
-            printf("\nCharger une partie\n");
-            ChargerPartie();
-          break;
-        
-        case 3:
             printf("\nAfficher les règles / crédits\n");
             Regles();
             break;
         
-        case 4:
+        case 3:
             printf("\nQuitter\n");
             Quitter();
             break;
@@ -976,7 +970,7 @@ void menuPrincipal()
         default:
             printf("Erreur");
             break;
-        }
+    }
 } 
 
 int main () 
