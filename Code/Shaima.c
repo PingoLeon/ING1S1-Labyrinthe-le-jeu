@@ -132,7 +132,7 @@ void Regles()
             {
             printf("Erreur");
             system("cls");
-            main();
+            call_main();
             }
            break;
         
@@ -254,7 +254,8 @@ int main()
     return 0;
 }
 
-void call_main()
+int call_main()
 {
     main();
+    return 0;
 }
