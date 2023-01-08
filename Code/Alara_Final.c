@@ -665,13 +665,20 @@ void insertion_cellule(){
     afficher_plateau();
 }
 
+
+void CommencerPartie(){
+    //Tout est initialisé, c'est là la boucle de jeu pour lancer un tour et ainsi de suite
+}
+
 // Structure qui permet de créer un pion
 struct Pion
 {
     int numero;
     int x;
     int y;
+    int numeroPerso;
     char symbole;
+    bool estEnTrainDeJouer;
 };
 
 // On génère les 4 pions possibles
@@ -681,42 +688,35 @@ struct Pion pion3 = {3, 6, 0, '*'};
 struct Pion pion4 = {4, 6, 6, '*'};
 
 // Fonction qui initialise les joueurs et leur attribue un pion
-int ChoixPions(){
-    int nbJoueurs;
+int ChoixPions(int nbJoueurs){
     int choixPions; 
     char *pions [] = {"Asterix", "Obelix", "Idefix", "Panoramix"};
-    printf("Choisissez votre pion : \n");
-
-
-    int i; 
-    for(i = 0; i < 4; i++)
-    {
-        printf("%d: %s\n", i+1, pions[i]);
-    }
-    
-    scanf("%d", &choixPions); 
-
-    switch(choixPions){
-        case 1:
-        printf("\rVous avez choisi Asterix!\nVous avez le pion vert.\n"); 
-        break;
-
-        case 2:
-        printf("Vous avez choisi Obelix!\nVous avez le pion bleu.\n");
-        break;
-
-        case 3:
-        printf("Vous avez choisi Idefix!\nVous avez le pion blanc.\n");
-        break;
-
-        case 4:
-        printf("Vous avez choisi Panoramix!\nVous avez le pion rouge.\n");
-        break;
-
-        default:
-            printf("Veuillez choisir un personnage qui est dans la liste.\n");
+    while (nbJoueurs != 0){
+        printf("Joueur %d, choisissez votre pion : \n", nbJoueurs);
+        printf("1: Asterix\n2: Obelix\n3: Idefix\n4: Panoramix\n");
+        scanf("%d", &choixPions);
+        switch(choixPions){
+            case 1:
+                printf("\rVous avez choisi Asterix!\nVous avez le pion vert.\n"); 
             break;
 
+            case 2:
+                printf("Vous avez choisi Obelix!\nVous avez le pion bleu.\n");
+            break;
+
+            case 3:
+                printf("Vous avez choisi Idefix!\nVous avez le pion blanc.\n");
+            break;
+
+            case 4:
+                printf("Vous avez choisi Panoramix!\nVous avez le pion rouge.\n");
+            break;
+
+            default:
+                printf("Vous n'avez pas choisi un pion valide.\n");
+            break;
+        }
+        nbJoueurs--;
     }
 }
 
@@ -737,20 +737,20 @@ void init_pions()
     // On génère les 4 pions
     if (nbJoueurs == 2)
     {
-        ChoixPions();
+        ChoixPions(2);
         printf("Pion 1 : %c\n", pion1.symbole);
         printf("Pion 2 : %c\n", pion2.symbole);
     }
     else if (nbJoueurs == 3)
     {
-        ChoixPions();
+        ChoixPions(3);
         printf("Pion 1 : %c\n", pion1.symbole);
         printf("Pion 2 : %c\n", pion2.symbole);
         printf("Pion 3 : %c\n", pion3.symbole);
     }
     else if (nbJoueurs == 4)
     {
-        ChoixPions();
+        ChoixPions(4);
         printf("Pion 1 : %c\n", pion1.symbole);
         printf("Pion 2 : %c\n", pion2.symbole);
         printf("Pion 3 : %c\n", pion3.symbole);
@@ -814,15 +814,14 @@ void carteDeDos (){
         {'|', '_', '_', '_', '_', '_', '_', '_', '_', '|'} };
 
         for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 10; j++) {
 
-            printf("\033[0;37m%c\033[0m ", map[i][j]); // en gris
+                printf("\033[0;37m%c\033[0m ", map[i][j]); // en gris
 
             }
             printf("\n"); 
-            }
-            //printf("\n"); 
-
+        }
+        //printf("\n"); 
 }
 
 // Création d'une fonction qui va appeler les deux fonctions précédentes pour créer une carte trésor de face et de dos
@@ -837,10 +836,8 @@ void carteTresor ()
 void initialisationPartie () 
 {
     init_plateau();
-    afficher_plateau();
     init_pions();
-    carteTresor();
-    //placer_tresor();
+    CommencerPartie();
 }
 
 // Fonction qui affiche les règles du jeu
