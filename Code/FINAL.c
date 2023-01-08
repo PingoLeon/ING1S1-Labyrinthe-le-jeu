@@ -35,6 +35,7 @@ struct Pion
     char symbole;
     bool estEnTrainDeJouer;
     char cartes[12];
+    char Personnage[20];
 };
 
 // On génère les 4 pions possibles
@@ -45,7 +46,7 @@ struct Pion pion4 = {4, 6, 6, '*', true};
 
 struct Pion liste_pion[4];
 typedef struct character {
-char name[20];
+    char name[20];
 } character;
 
 //Définition des attibuts de la structure cellule
@@ -147,7 +148,6 @@ void maj_compatibilite(){
         for(j=0;j<7; j++){
             switch (plateau[i][j].type){
                 case T:
-                    printf("orientation : %d\n", plateau[i][j].orientation);
                     if(plateau[i][j].orientation == 1){
                         //update the list of compatibilities
                         plateau[i][j].compatibilite[0] = 0;
@@ -175,7 +175,6 @@ void maj_compatibilite(){
                     }
                     break;
                 case L:
-                    printf("orientation : %d\n", plateau[i][j].orientation);
                     if (plateau[i][j].orientation == 1){
                         //update the list of compatibilities
                         plateau[i][j].compatibilite[0] = 1;
@@ -203,7 +202,6 @@ void maj_compatibilite(){
                     }
                     break;
                 case I:
-                    printf("orientation : %d\n", plateau[i][j].orientation);
                     if (plateau[i][j].orientation == 1){
                         //update the list of compatibilities
                         plateau[i][j].compatibilite[0] = 1;
@@ -235,9 +233,7 @@ void maj_compatibilite(){
             if(j==6){
                 plateau[i][j].compatibilite[2] = 0;
             }
-        }
-
-        
+        }     
     }
 }
 
@@ -404,9 +400,12 @@ void fill_pion(int nb, int x, int y){
     //We need all combinations of those 3 characters to fill the line
     char *pion_à_placer = " ";
     int isTherePion = 0;
-    if ((pion1.x == x && pion1.y == y) || (pion2.x == x && pion2.y == y) || (pion3.x == x && pion3.y == y) || (pion4.x == x && pion4.y == y)){
+    if ((liste_pion[0].x == x && liste_pion[0].y == y) || (liste_pion[1].x == x && liste_pion[1].y == y) || (liste_pion[2].x == x && liste_pion[2].y == y) || (liste_pion[3].x == x && liste_pion[3].y == y)){
         isTherePion = 1;
         pion_à_placer = "*";
+    }else{
+        isTherePion = 0;
+        pion_à_placer = " ";
     }
 
     switch (nb)
@@ -672,7 +671,18 @@ void mouvement_pion(int nbpion){
     bool state = false;
     while(state == false){
         //Affichage du menu
-        printf("\n\nVous êtes le pion %d et vous êtes en (%d,%d) \n", nbpion+1, liste_pion[nbpion].x, liste_pion[nbpion].y);
+        char name[20];
+        if(liste_pion[nbpion].numeroPerso == 1){
+            strcpy(name, "Asterix");
+        }else if(liste_pion[nbpion].numeroPerso == 2){
+            strcpy(name, "Obelix");
+        }else if(liste_pion[nbpion].numeroPerso == 3){
+            strcpy(name, "Panoramix");
+        }else if(liste_pion[nbpion].numeroPerso == 4){
+            strcpy(name, "Idéfix");
+        }
+
+        printf("\n\nC'est le tour de %s et vous êtes en (%d,%d) \n",name, liste_pion[nbpion].x, liste_pion[nbpion].y);
         int x = liste_pion[nbpion].x;
         int y = liste_pion[nbpion].y;
         //verify if the cell the pion is on is compatible with the cell the pion wants to go
@@ -889,6 +899,7 @@ void init_pions(){
     }else if(nbJoueurs == 4){
         liste_pion[3] = pion4;
     }
+
     // On demande à chaque joueur de choisir un personnage
     for (int i = 0; i < nbJoueurs; i++) {
         printf("\nJoueur %d, choisissez un personnage :\n", i + 1);
@@ -914,6 +925,7 @@ void init_pions(){
         if (available == 1) {
             // Si le personnage n'a pas été choisi, on affecte le pointeur correspondant au joueur courant
             players[i] = &characters [choice - 1];
+            liste_pion[i].numeroPerso = choice;
         } else {
             // Sinon, on demande au joueur de choisir un autre personnage
             printf("Ce personnage a déjà été choisi, choisissez-en un autre.\n");
