@@ -150,7 +150,7 @@ void Regles()
     }
     } while (choixRegles != 0);
     system("cls");
-    main();
+    call_main();
 }
 
 // Fonction qui permet de quitter le jeu
@@ -252,4 +252,9 @@ int main()
         }
     
     return 0;
+}
+
+void call_main()
+{
+    main();
 }
