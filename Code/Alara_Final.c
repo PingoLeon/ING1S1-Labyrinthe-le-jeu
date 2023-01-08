@@ -666,8 +666,14 @@ void insertion_cellule(){
 }
 
 
-void CommencerPartie(){
+void Boucle(){
     //Tout est initialisé, c'est là la boucle de jeu pour lancer un tour et ainsi de suite
+    int tour = 1;
+
+    //Afficher le plateau
+    afficher_plateau();
+
+    //Demander 
 }
 
 // Structure qui permet de créer un pion
