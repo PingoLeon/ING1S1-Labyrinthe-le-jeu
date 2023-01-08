@@ -787,46 +787,61 @@ int ChoixPions(int nbJoueurs){
     }
 }
 
-void init_pions()
+// Structure de données pour un personnage
+typedef struct character 
 {
-    int nbJoueurs;
-    printf("Combien de joueurs ? (2 à 4) : ");
-    scanf("%d", &nbJoueurs);
-    if (nbJoueurs < 2 && nbJoueurs > 4)
+char name[20];
+} character;
+
+void init_pions () 
+{
+// On crée un tableau de 4 personnages
+character characters []= {"Asterix", "Obelix", "Panoramix", "Idefix"}; 
+
+// On crée un tableau de 4 points d'entrée (pointeurs) de personnages
+character* players[4]; 
+
+// On demande à chaque joueur de choisir un personnage
+for (int i = 0; i < 4; i++) 
+{
+    printf("Joueur %d, choisissez un personnage :\n", i + 1);
+    for (int j = 0; j < 4; j++) 
     {
-        printf("Erreur : le nombre de joueurs doit être compris entre 2 et 4.\n");
+        printf("%d) %s\n", j + 1, characters[j].name);
     }
-    else
+    
+    printf("\nVotre choix : ");
+
+    int choice;
+    scanf("%d", &choice);
+    printf("%d\n", choice);
+    printf("\n\n");
+
+    // On vérifie que le personnage n'a pas déjà été choisi par un autre joueur
+    int available = 1;
+    for (int j = 0; j < i; j++) 
     {
-        printf("Il y a %d joueurs.\n", nbJoueurs);
+        if (players[j] == &characters[choice - 1]) 
+            {
+                available = 0;
+                break;
+            }
     }
 
-    // On génère les 4 pions
-    if (nbJoueurs == 2)
+    if (available) 
     {
-        ChoixPions(2);
-        printf("Pion 1 : %c\n", pion1.symbole);
-        printf("Pion 2 : %c\n", pion2.symbole);
-    }
-    else if (nbJoueurs == 3)
-    {
-        ChoixPions(3);
-        printf("Pion 1 : %c\n", pion1.symbole);
-        printf("Pion 2 : %c\n", pion2.symbole);
-        printf("Pion 3 : %c\n", pion3.symbole);
-    }
-    else if (nbJoueurs == 4)
-    {
-        ChoixPions(4);
-        printf("Pion 1 : %c\n", pion1.symbole);
-        printf("Pion 2 : %c\n", pion2.symbole);
-        printf("Pion 3 : %c\n", pion3.symbole);
-        printf("Pion 4 : %c\n", pion4.symbole);
+        players[i] = &characters [choice - 1]; // Si le personnage n'a pas été choisi, on affecte le pointeur correspondant au joueur courant
+    } else {
+        printf("Ce personnage a déjà été choisi, choisissez-en un autre.\n");
+        i--;
     }
 
-
-} 
-
+    for (int i = 0; i < 4; i++) 
+    {
+        printf("Joueur %d : %s\n", i + 1, players[i]->name);
+    }
+}
+}
 // CARTE TRESOR
 // Création d'une carte de face 
 void carteDeFace() {
