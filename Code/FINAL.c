@@ -778,7 +778,19 @@ void Boucle(){
     while(Jeu == 1){
         //Boucle while d'un tour de joueur, répétée nbJoueurs fois, et ensuite on recommence
         for(int i = 0; i < nbJoueurs; i++){
-            printf("\n\n\nC'est au tour du joueur %d !\n", i+1);
+
+            //Affichage du menu
+            char name[20];
+            if(liste_pion[i].numeroPerso == 1){
+                strcpy(name, "Asterix");
+            }else if(liste_pion[i].numeroPerso == 2){
+                strcpy(name, "Obelix");
+            }else if(liste_pion[i].numeroPerso == 3){
+                strcpy(name, "Panoramix");
+            }else if(liste_pion[i].numeroPerso == 4){
+                strcpy(name, "Idéfix");
+            }
+            printf("\n\n\nC'est au tour de %s !\n", name);
             //Afficher le plateau
             afficher_plateau();
 
