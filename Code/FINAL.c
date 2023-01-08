@@ -43,6 +43,7 @@ struct Pion pion2 = {2, 0, 6, '*', true};
 struct Pion pion3 = {3, 6, 0, '*', true};
 struct Pion pion4 = {4, 6, 6, '*', true};
 
+struct Pion liste_pion[4];
 typedef struct character {
 char name[20];
 } character;
@@ -391,31 +392,8 @@ void fill(int nb){
     //We need all combinations of those 3 characters to fill the line
     switch (nb)
     {
-    case 0:
-        printf("      "); //000
-        break;
-    case 1:
-        printf("    \u2588\u2588"); //001
-        break;
-
-    case 2:
-        printf("  \u2588\u2588  "); //010
-        break;
-
-    case 3:
-        printf("  \u2588\u2588\u2588\u2588"); //011
-        break;
-
-    case 4:
-        printf("\u2588\u2588    "); //100
-        break;
-
     case 5:
         printf("\u2588\u2588  \u2588\u2588"); //101
-        break;
-
-    case 6:
-        printf("\u2588\u2588\u2588\u2588  "); //110
         break;
 
     case 7:
@@ -430,45 +408,29 @@ void fill(int nb){
 void fill_pion(int nb, int x, int y){
     //each text has 3 characters possible, being filled with double space, or a full block (u2588)
     //We need all combinations of those 3 characters to fill the line
-    char pion[8] = " ";
+    char *pion_à_placer = " ";
     int isTherePion = 0;
     if ((pion1.x == x && pion1.y == y) || (pion2.x == x && pion2.y == y) || (pion3.x == x && pion3.y == y) || (pion4.x == x && pion4.y == y)){
         isTherePion = 1;
+        pion_à_placer = "*";
     }
 
     switch (nb)
     {
     case 0:
-        printf("      "); //000
+        printf("   %s  ", pion_à_placer); //000
         break;
     case 1:
-        printf("    \u2588\u2588"); //001
-        break;
-
-    case 2:
-        printf("  \u2588\u2588  "); //010
-        break;
-
-    case 3:
-        printf("  \u2588\u2588\u2588\u2588"); //011
+        printf("  %s \u2588\u2588", pion_à_placer); //001
         break;
 
     case 4:
-        printf("\u2588\u2588    "); //100
+        printf("\u2588\u2588 %s  ", pion_à_placer); //100
         break;
 
     case 5:
-        printf("\u2588\u2588  \u2588\u2588"); //101
+        printf("\u2588\u2588 %s\u2588\u2588", pion_à_placer); //101
         break;
-
-    case 6:
-        printf("\u2588\u2588\u2588\u2588  "); //110
-        break;
-
-    case 7:
-        printf("\u2588\u2588\u2588\u2588\u2588\u2588"); //111
-        break;
-
     default:
         break;
     }
@@ -564,9 +526,6 @@ void afficher_cellule_ligne3(int type, int orientation){
         }
     }
 }
-
-
-
 
 void afficher_plateau() {
     setlocale(LC_ALL, "en_US.utf8");
@@ -714,6 +673,13 @@ void insertion_cellule(){
     global_tile = global_tile_temp;
 }
 
+//Fonction permettant le mouvement de pions
+void mouvement_pion(int nbpion){
+    int x, y;
+    //Affichage du menu
+    printf("\n\nVous êtes le pion %d et vous êtes en (%d,%d) \n", nbpion+1, liste_pion[nbpion].x, liste_pion[nbpion].y);
+}
+
 
 void Boucle(){
     //Tout est initialisé, c'est là la boucle de jeu pour lancer un tour et ainsi de suite
@@ -771,7 +737,7 @@ void Boucle(){
                 scanf("%d", &choix);
                 if(choix == 1){
                     //Bouger le gars
-                    //mouvement_pion(i+1);
+                    mouvement_pion(i);
                     afficher_plateau();
                     choix = 1;
                 }
@@ -824,6 +790,8 @@ void init_pions(){
     }
 
     //set Pion.estEnTrainDeJouer = false if numero > nbJoueurs
+    liste_pion[0] = pion1;
+    liste_pion[1] = pion2;
     if(nbJoueurs == 2){
         pion3.estEnTrainDeJouer = false;
         pion3.x = -1;
@@ -834,9 +802,12 @@ void init_pions(){
 
     }
     else if(nbJoueurs == 3){
+        liste_pion[2] = pion3;
         pion4.estEnTrainDeJouer = false;
         pion4.x = -1;
         pion4.y = -1;
+    }else if(nbJoueurs == 4){
+        liste_pion[3] = pion4;
     }
     // On demande à chaque joueur de choisir un personnage
     for (int i = 0; i < nbJoueurs; i++) {
