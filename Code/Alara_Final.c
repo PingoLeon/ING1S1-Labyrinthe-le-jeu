@@ -673,7 +673,8 @@ void Boucle(){
     //Afficher le plateau
     afficher_plateau();
 
-    //Demander 
+    //Montrer la carte du gars
+    afficher_carte();
 }
 
 // Structure qui permet de créer un pion

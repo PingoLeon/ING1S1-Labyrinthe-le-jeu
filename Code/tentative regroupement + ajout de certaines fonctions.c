@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <locale.h>
+#include <windows.h>
 
 //Structure d'une cellule sur un plateau de jeu :
 //Attributs : - Position (x,y)
@@ -32,11 +34,40 @@ typedef struct cellule{
 #define BAS 3
 #define GAUCHE 4
 
+/*
+    0 : Noir
+    1 : Bleu foncé
+    2 : Vert foncé
+    3 : Turquoise
+    4 : Rouge foncé
+    5 : Violet
+    6 : Vert caca d'oie
+    7 : Gris clair
+    8 : Gris foncé
+    9 : Bleu fluo
+    10 : Vert fluo
+    11 : Turquoise
+    12 : Rouge fluo
+    13 : Violet 2
+    14 : Jaune
+    15 : Blanc
+    */
+#define COULEUR_TEXTE 9
+#define COULEUR_FOND 0
+
+
 //Création d'un plateau de 7*7 cases ( 49 cases au total) (liste de liste de cellules)
 cellule plateau[7][7];
 
 //Création d'une cellule global_tile qui va être utilisée pour faire bouger le plateau
 cellule global_tile; 
+
+//initialisation de la couleur du texte et du fond de la console
+void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
+{
+    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
+}
 
 /*Comportement d'une cellule
     - Une cellule type T ou L(type = 1 ou 2) a 4 orientations possibles, tandis qu'une cellule type I(type = 3) a 2 orientations possibles
@@ -172,7 +203,7 @@ void maj_compatibilite(){
                 }
             }
 
-            //Si la cellule est au bord du plateau, on met à jour les compatibilités
+            //Si la cellule est au bord du plateau, on met à jour les compatibilités 
             if(i==0){
                 plateau[i][j].compatibilite[0] = 0;
             }
@@ -193,8 +224,8 @@ void maj_compatibilite(){
 void derniere_tuile(int t_counter, int l_counter, int l_nontresor_counter){
 
     // Seed the random number generator with the current time
-    srand(time(NULL));
-
+    srand(time(NULL)); 
+    
     // check the values of the counters
     if(t_counter < 6){
         // create a T cell with a treasure
@@ -308,10 +339,11 @@ void init_plateau(){
     //création d'un plateau aléatoire : 
     int i,j;
     for(i=0;i<7;i++){
-        for(j=0;j<7;j++){
-            plateau[i][j].x = i;
+        for(j=0;j<7;j++)
+        {
+            plateau[i][j].x = i; 
             plateau[i][j].y = j;
-            plateau[i][j].mobilité = (i%2 == 0 && j%2 == 0) ? false : true;  
+            plateau[i][j].mobilité = (i%2 == 0 && j%2 == 0) ? false : true; // Si la cellule est sur une ligne ou une colonne paire, elle est inamovible
         }
     }
     //Appel de la fonction de correction du plateau qui va remplir les cellules inamovibles et les cellules amovibles, et créer la dernière cellule excroissante 
@@ -321,61 +353,102 @@ void init_plateau(){
     maj_compatibilite();
 }
 
+void fill(int nb){
+    //each text has 3 characters possible, being filled with double space, or a full block (u2588)
+    //We need all combinations of those 3 characters to fill the line
+    switch (nb)
+    {
+    case 0:
+        printf("      "); //000
+        break;
+    case 1:
+        printf("    \u2588\u2588"); //001
+        break;
+    
+    case 2:
+        printf("  \u2588\u2588  "); //010
+        break;
+    
+    case 3:
+        printf("  \u2588\u2588\u2588\u2588"); //011
+        break;
+    
+    case 4:
+        printf("\u2588\u2588    "); //100
+        break;
+    
+    case 5:
+        printf("\u2588\u2588  \u2588\u2588"); //101
+        break;
+    
+    case 6:
+        printf("\u2588\u2588\u2588\u2588  "); //110
+        break;
+
+    case 7:
+        printf("\u2588\u2588\u2588\u2588\u2588\u2588"); //111
+        break;
+
+    default:
+        break;
+    }
+}
+
 void afficher_cellule_ligne1(int type, int orientation) {
     if (type == T) {
         if (orientation == 1){
-            printf("# # # ");
+            fill(7);
         } else if (orientation == 2){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 3){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 4){
-            printf("#   # ");
+            fill(5);
         }
     } else if (type == L) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         }else if (orientation == 2){
-            printf("# # # ");
+            fill(7);
         } else if(orientation == 3){
-            printf("# # # ");
+            fill(7);
         } else if (orientation == 4){
-            printf("#   # ");
+            fill(5);
         }
     } else if (type == I) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("# # # ");
+            fill(7);
         }
     }
 }
 void afficher_cellule_ligne2(int type, int orientation) {
     if (type == T) {
         if (orientation == 1){
-            printf("      ");
+            fill(0);
         } else if (orientation == 2){
-            printf("    # ");
+            fill(1);
         } else if (orientation == 3){
-            printf("      ");
+            fill(0);
         } else if (orientation == 4){
-            printf("#     ");
+            fill(4);
         }
     }else if (type == L) {
         if (orientation == 1){
-            printf("#     ");
+            fill(4);
         }else if (orientation == 2){
-            printf("#     ");
+            fill(4);
         } else if(orientation == 3){
-            printf("    # ");
+            fill(1);
         } else if (orientation == 4){
-            printf("#     ");
+            fill(1);
         }
     } else if (type == I) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("      ");
+            fill(0);
         }
     }
 }
@@ -383,43 +456,51 @@ void afficher_cellule_ligne2(int type, int orientation) {
 void afficher_cellule_ligne3(int type, int orientation){
     if (type == T) {
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 3){
-            printf("# # # ");
+            fill(7);
         } else if (orientation == 4){
-            printf("#   # ");
+            fill(5);
         }
     }else if (type == L){
         if (orientation == 1){
-            printf("# # # ");
+            fill(7);
         }else if (orientation == 2){
-            printf("#   # ");
+            fill(5);
         } else if(orientation == 3){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 4){
-            printf("# # # ");
+            fill(7);
         }
     } else if (type == I){
         if (orientation == 1){
-            printf("#   # ");
+            fill(5);
         } else if (orientation == 2){
-            printf("# # # ");
+            fill(7);
         }
     }
 }
 
+
 void afficher_plateau() {
+    setlocale(LC_ALL, "en_US.utf8");
     for (int i = 0; i < 7; i++) {
         for(int num_line = 0; num_line < 3; num_line++){
             for (int j = 0; j < 7; j++) {
                 if (num_line == 0){
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne1(plateau[i][j].type, plateau[i][j].orientation);
+                    Color(15,0);
                 } else if (num_line == 1){
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne2(plateau[i][j].type, plateau[i][j].orientation);
+                    Color(15,0);
                 } else if (num_line == 2){
+                    Color(COULEUR_TEXTE,COULEUR_FOND);
                     afficher_cellule_ligne3(plateau[i][j].type, plateau[i][j].orientation);
+                    Color(15,0);
                 }
             }
             printf("\n");
@@ -427,57 +508,74 @@ void afficher_plateau() {
     }
 }
 
-void afficher_une_cellule(int type, int orientation, char* line) {
-    if (type == T) {
-        if (orientation == 1){
-            printf("# # #\n");
-            printf("     \n");
-            printf("#   #\n");
-        } else if (orientation == 2){
-            printf("#   #\n");
-            printf("    #\n");
-            printf("#   #\n");
-        } else if (orientation == 3){
-            printf("#   #\n");
-            printf("     \n");
-            printf("# # #\n");
-        } else if (orientation == 4){
-            printf("#   #\n");
-            printf("#    \n");
-            printf("#   #\n");
-        }
-    }else if (type == L) {
-        if (orientation == 1){
-            printf("#   #\n");
-            printf("#    \n");
-            printf("# # #\n");
-        }else if (orientation == 2){
-            printf("# # #\n");
-            printf("#    \n");
-            printf("#   #\n");
-        } else if(orientation == 3){
-            printf("# # #\n");
-            printf("    #\n");
-            printf("#   #\n");
-        } else if (orientation == 4){
-            printf("#   #\n");
-            printf("    #\n");
-            printf("# # #\n");
-        }
-    } else if (type == I) {
-        if (orientation == 1){
-            printf("#   #\n");
-            printf("#   #\n");
-            printf("#   #\n");
-        } else if (orientation == 2){
-            printf("# # #\n");
-            printf("     \n");
-            printf("# # #\n");
+//Fonction permettant de placer les tresors en fonction de la tuile imposée
+//Si la tuile est déjà occupée, on ne fait rien
+//Les tuiles I et celles sur les bords ne peuvent pas contenir de trésor
+//Les tuiles L et T peuvent contenir un trésor si elles sont libres et si elles ne sont pas sur les bords du plateau
+//il faut 6L avec tresor
+//il faut 4L avec position des pions
+//il faut 6L sans tresor
+//il faut 6T avec tresor
+//il faut 12 I sans tresor
+
+void placer_tresor(int type, int orientation, int x, int y) {
+    if (plateau[x][y].tresor == true) { // Si la case est déjà occupée, on ne fait rien
+        if (type == T) { // Si la tuile est un T
+            if (x != 0 && x != 7 && y != 0 && y != 7) { // Si la tuile n'est pas sur les bords du plateau 
+                plateau[x][y].type = T;
+                plateau[x][y].orientation = orientation; 
+                plateau[x][y].tresor = 1; // On place le trésor
+            }
+        } else if (type == L) {
+            if (x != 0 && x != 7 && y != 0 && y != 7) {
+                plateau[x][y].type = L;
+                plateau[x][y].orientation = orientation;
+                plateau[x][y].tresor = 1;
+            }
         }
     }
 }
 
-// Structure qui définit un pion
+
+
+//Fonction qui permet de charger une partie
+void ChargerPartie()
+{
+    FILE* fichier = NULL;
+    fichier = fopen("sauvegarde.txt", "r");
+    if (fichier != NULL)
+    {
+        char caractereActuel = 0;
+        while (caractereActuel != EOF)
+        {
+            caractereActuel = fgetc(fichier);
+            printf("%c", caractereActuel);
+        }
+        fclose(fichier);
+    }
+    else
+    {
+        printf("Impossible d'ouvrir le fichier sauvegarde.txt");
+    }
+}
+
+// Fonction qui permet de sauvegarder une partie
+void SauvegarderPartie()
+{
+    FILE* fichier = NULL;
+    fichier = fopen("sauvegarde.txt", "w");
+    if (fichier != NULL)
+    {
+        fprintf(fichier, "Sauvegarde");
+        fclose(fichier);
+    }
+    else
+    {
+        printf("Impossible d'ouvrir le fichier sauvegarde.txt");
+    }
+}
+
+// Structure qui permet de créer un pion
 struct Pion
 {
     int numero;
@@ -485,13 +583,54 @@ struct Pion
     int y;
     char symbole;
 };
+
 // On génère les 4 pions possibles
-struct Pion pion1 = {1, 0, 0, 'A'};
-struct Pion pion2 = {2, 0, 6, 'B'};
-struct Pion pion3 = {3, 6, 0, 'C'};
-struct Pion pion4 = {4, 6, 6, 'D'};
+struct Pion pion1 = {1, 0, 0, '*'};
+struct Pion pion2 = {2, 0, 6, '*'};
+struct Pion pion3 = {3, 6, 0, '*'};
+struct Pion pion4 = {4, 6, 6, '*'};
 
 // Fonction qui initialise les joueurs et leur attribue un pion
+int ChoixPions(){
+    int nbJoueurs;
+    int choixPions; 
+    char *pions [] = {"Asterix", "Obelix", "Idefix", "Panoramix"};
+    printf("Choisissez votre pion : \n");
+
+
+    int i; 
+    for(i = 0; i < 4; i++)
+    {
+        printf("%d: %s\n", i+1, pions[i]);
+    }
+    
+scanf("%d", &choixPions); 
+
+switch(choixPions){
+        case 1:
+        printf("\rVous avez choisi Asterix!\nVous avez le pion vert.\n"); 
+        break;
+
+        case 2:
+        printf("Vous avez choisi Obelix!\nVous avez le pion bleu.\n");
+        break;
+
+        case 3:
+        printf("Vous avez choisi Idefix!\nVous avez le pion blanc.\n");
+        break;
+
+        case 4:
+        printf("Vous avez choisi Panoramix!\nVous avez le pion rouge.\n");
+        break;
+
+        default:
+            printf("Veuillez choisir un personnage qui est dans la liste.\n");
+            break;
+
+    }
+
+}
+
 void init_pions()
 {
     int nbJoueurs;
@@ -509,20 +648,20 @@ void init_pions()
     // On génère les 4 pions
     if (nbJoueurs == 2)
     {
-        printf("Il y a 2 joueurs.\n");
+        ChoixPions();
         printf("Pion 1 : %c\n", pion1.symbole);
         printf("Pion 2 : %c\n", pion2.symbole);
     }
     else if (nbJoueurs == 3)
     {
-        printf("Il y a 3 joueurs.\n");
+        ChoixPions();
         printf("Pion 1 : %c\n", pion1.symbole);
         printf("Pion 2 : %c\n", pion2.symbole);
         printf("Pion 3 : %c\n", pion3.symbole);
     }
     else if (nbJoueurs == 4)
     {
-        printf("Il y a 4 joueurs.\n");
+        ChoixPions();
         printf("Pion 1 : %c\n", pion1.symbole);
         printf("Pion 2 : %c\n", pion2.symbole);
         printf("Pion 3 : %c\n", pion3.symbole);
@@ -531,16 +670,126 @@ void init_pions()
 
 } 
 
+// CARTE TRESOR
+// Création d'une carte de face 
+void carteDeFace() {
 
-// Fonction qui permet de créer une nouvelle partie et permet son déroulement
-void nouvellepartie()
+  char map[10][10] = {
+    {' ', '_', '_', '_', '_', '_', '_', '_', '_', ' '},
+    {'|', ' ', 'T', 'r', 'e', 's', 'o', 'r', ' ', '|'},
+    {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+    {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+    {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+    {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+    {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+    {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+    {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+    {'|', '_', '_', '_', '_', '_', '_', '_', '_', '|'} };
+
+
+    char tresors[24] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'};
+
+    for (int i = 0; i < 10; i++) 
+    {
+        for (int j = 0; j < 10; j++) 
+        {
+
+        printf("\033[1;37m%c\033[0m ", map[i][j]);// pour afficher la carte en blanc
+        //\033[1;37mTexte en blanc\033[0m     blanc
+
+        if ( i==5 && j==4)
+        {
+        srand(time(0));
+        int k = rand() % 24;
+
+        printf("\033[33m%c\033[33m ", tresors[k]);// pour afficher le trésor en jaune
+        //\033[33mTexte en jaune\033[33m       jaune
+        }
+       }
+     printf("\n");
+    }
+}
+
+// Création d'une carte trésor de dos
+void carteDeDos (){
+    char map[10][10] = {
+        {' ', '_', '_', '_', '_', '_', '_', '_', '_', ' '},
+        {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+        {'|', ' ', 'T', 'r', 'e', 's', 'o', 'r', ' ', '|'},
+        {'|', ' ', ' ', 'r', ' ', ' ', ' ', ' ', ' ', '|'},
+        {'|', ' ', ' ', ' ', 'e', ' ', ' ', ' ', ' ', '|'},
+        {'|', ' ', ' ', ' ', ' ', 's', ' ', ' ', ' ', '|'},
+        {'|', ' ', ' ', ' ', ' ', ' ', 'o', ' ', ' ', '|'},
+        {'|', ' ', 'T', 'r', 'e', 's', 'o', 'r', ' ', '|'},
+        {'|', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|'},
+        {'|', '_', '_', '_', '_', '_', '_', '_', '_', '|'} };
+
+        for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+
+            printf("\033[0;37m%c\033[0m ", map[i][j]); // en gris
+
+            }
+            printf("\n"); 
+            }
+            //printf("\n"); 
+
+}
+
+// Création d'une fonction qui va appeler les deux fonctions précédentes pour créer une carte trésor de face et de dos
+void carteTresor ()
+{
+    carteDeFace();
+    carteDeDos();
+}
+
+
+//Fonction qui va permettre de piocher une carte trésor au hasard dans le paquet de carte
+void piochercarte(){
+    carteTresor();
+}
+
+//Fonction qui permet de distribuer les cartes en fonction du nombre de joueurs
+void distribuerCartes(int nbJoueurs) {
+    if (nbJoueurs == 2) {
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 2; j++) {
+                carte = 12*piocherCarte();
+            }
+        }
+    }
+    else if (nbJoueurs == 4) {
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                carte = 6*piocherCarte();
+            }
+        }
+    }
+    else if (nbJoueurs == 3) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 3; j++) {
+                carte = 8*piocherCarte();
+            }
+        }
+    }
+}
+
+
+
+
+// Fonction qui permet de mettre en place le déroulement de la partie
+void initialisationPartie () 
 {
     init_plateau();
     afficher_plateau();
-    init_joueurs();
     init_pions();
+    afficher_pions();
+    placer_tresor();
+    afficher_tresor();
+    distribuerCartes(nbJoueurs);
+    afficherCartes();
+    sauvegarder_partie();
 }
-
 
 // Fonction qui affiche les règles du jeu
 void Regles()
@@ -608,8 +857,8 @@ void Regles()
 
            else 
             {
-              printf("---------------------------------------------\n");
-              main();
+            printf("Erreur");
+            main();
             }
            break;
         
@@ -620,15 +869,16 @@ void Regles()
             break;
     
         default:
-            printf("---------------------------------------------\n\n");
+            printf("------------------------------------\n\n");
             main();
             break;
     }
+
     } while (choixRegles != 0);
     
-  printf("---------------------------------------------\n");
     main();
 }
+
 
 // Fonction qui permet de quitter le jeu
 void Quitter()
@@ -636,21 +886,16 @@ void Quitter()
     printf("Merci d'avoir joué au Labyrinth !\n");
     exit(0);
 }
-
-
-
-
+tentative regroupement + ajout de certaines fonctions  
 
 // Menu principal du jeu
-int main()
+void menuPrincipal()
 {
-    
     int choix;
     printf(" 1 - Nouvelle Partie\n");
-    printf(" 2 - Sauvegarde\n");
-    printf(" 3 - Charger une partie\n");
-    printf(" 4 - Afficher les règles / crédits\n");
-    printf(" 5 - Quitter\n");
+    printf(" 2 - Charger une partie\n");
+    printf(" 3 - Afficher les règles / crédits\n");
+    printf(" 4 - Quitter\n");
     printf("\n Votre choix : ");
     scanf("%d", &choix);
 
@@ -658,30 +903,96 @@ int main()
     {
         case 1:
             printf("\nNouvelle Partie\n");
-            nouvellepartie();
+            initialisationPartie();
             break;
         
         case 2:
-            printf("\nSauvegarde\n");
-            break;
+            printf("\nCharger une partie\n");
+            ChargerPartie();
+          break;
         
         case 3:
-            printf("\nCharger une partie\n");
-            break;
-        
-        case 4:
             printf("\nAfficher les règles / crédits\n");
             Regles();
             break;
         
-        case 5:
+        case 4:
             printf("\nQuitter\n");
             Quitter();
             break;
+        
         default:
             printf("Erreur");
             break;
         }
-    
-    return 0;
+} 
+
+int main () 
+{
+menuPrincipal();
+deroulementPartie();
+return 0; 
 }
+
+//si le joueur tombe sur une case avec un tresor, il le prend et on augmente son score de 1 point et il pioche une nouvelle carte avec un nouveau tresor à chercher à attribuer à un autre joueur
+//si le joueur tombe sur une case avec un tresor deja pris, il ne le prend pas et on ne change pas son score
+//si le joueur tombe sur une case avec un mur, il ne peut pas se deplacer et on ne change pas son score
+//si le joueur tombe sur une case avec un autre joueur, il ne peut pas se deplacer et on ne change pas son score
+//si le joueur tombe sur une case vide, il peut se deplacer et on ne change pas son score
+//le joueur qui trouve tout les tresors attribués par ses cartes et qui retourne sur la case de depart gagne la partie
+
+//fonction qui permet de choisir le nombre de joueurs
+int choixNbJoueurs()
+{
+    int nbJoueurs;
+    printf("Combien de joueurs ? (2 à 4) : ");
+    scanf("%d", &nbJoueurs);
+    return nbJoueurs;
+}
+
+//fonction qui permet de choisir le nombre de cartes par joueur
+int choixNbCartes()
+{
+    int nbCartes = 24;
+    if (nbJoueurs == 2)
+    {
+        nbCartes = 12*piocherCarte();
+    }
+    else if (nbJoueurs == 3)
+    {
+        nbCartes = 8*piocherCarte();
+    }
+    else if (nbJoueurs == 4)
+    {
+        nbCartes = 6*piocherCarte();
+    }
+
+}
+
+//fonction qui permet d'etablir les scores de chaque joueur
+//si un tresor est deja pris, on ne le prend pas et on ne change pas son score
+//si un tresor n'est pas pris et correspond à la carté distribuée, on le prend et on augmente le score du joueur de 1 point
+
+void etablirScore()
+{
+    int score = 0;
+    if (tresorPris == 0)
+    {
+        if (tresor == carte)
+        {
+            score = score + 1;
+        }
+    }
+}
+
+void deroulementPartie()
+{
+    int nbJoueurs = choixNbJoueurs();
+    int nbCartes = choixNbCartes();
+    int score = etablirScore();
+}
+
+
+
+
+
