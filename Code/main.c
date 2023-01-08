@@ -597,8 +597,10 @@ void insertion_cellule(){
         //Saisie de la tuile
         printf("Entrez x , suivi de y, le tout coupé par un slash:");
         scanf("%d,%d", &x, &y);
+        x = x - 1;
+        y = y - 1;
         //Vérification de la saisie
-        if(x > 0 && x < 8 && y > 0 && y < 8){
+        if(x >= 0 && x <= 7 && y >= 0 && y <= 7){
             //One of the two coordinates is either 0 or 6 we must verify it
             if(x == 0 || x == 6 || y == 0 || y == 6){
                 state = 1;
@@ -655,6 +657,7 @@ void insertion_cellule(){
     }
 
     // Insert the global_tile into the plateau
+    global_tile.mobilité = true;
     plateau[x][y] = global_tile;
 
     // Update the global_tile with the global_tile_temp
