@@ -591,20 +591,16 @@ void insertion_cellule(){
 
         //Affichage du menu
         printf("\n\nA quelles coordonnées souhaitez-vous insérer la tuile ? (x,y) \n");
-        printf("Entrez x , suivi de y, les deux séparés par une virgule : \n");
-        printf("Exemple : 2,4 \n");
-
-        //Saisie de la tuile
-        printf("Entrez x , suivi de y, le tout coupé par une virgule:");
+        printf("Entrez x , suivi de y, le tout coupé par une virgule : ");
         scanf("%d,%d", &x, &y);
-        x = x - 1;
-        y = y - 1;
+        x -= 1;
+        y -= 1;
         //Vérification de la saisie
         if(x >= 0 && x <= 7 && y >= 0 && y <= 7){
             //One of the two coordinates is either 0 or 6 we must verify it
             if(x == 0 || x == 6 || y == 0 || y == 6){
                 state = 1;
-                printf("Tuile insérée en %d,%d \n", x, y);
+                printf("Tuile insérée en %d,%d !\n", x, y);
             }
         }
 
