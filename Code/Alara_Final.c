@@ -665,45 +665,6 @@ void insertion_cellule(){
     afficher_plateau();
 }
 
-
-
-//Fonction qui permet de charger une partie
-void ChargerPartie()
-{
-    FILE* fichier = NULL;
-    fichier = fopen("sauvegarde.txt", "r");
-    if (fichier != NULL)
-    {
-        char caractereActuel = 0;
-        while (caractereActuel != EOF)
-        {
-            caractereActuel = fgetc(fichier);
-            printf("%c", caractereActuel);
-        }
-        fclose(fichier);
-    }
-    else
-    {
-        printf("Impossible d'ouvrir le fichier sauvegarde.txt");
-    }
-}
-
-// Fonction qui permet de sauvegarder une partie
-void SauvegarderPartie()
-{
-    FILE* fichier = NULL;
-    fichier = fopen("sauvegarde.txt", "w");
-    if (fichier != NULL)
-    {
-        fprintf(fichier, "Sauvegarde");
-        fclose(fichier);
-    }
-    else
-    {
-        printf("Impossible d'ouvrir le fichier sauvegarde.txt");
-    }
-}
-
 // Structure qui permet de créer un pion
 struct Pion
 {
