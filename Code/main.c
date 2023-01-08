@@ -595,7 +595,7 @@ void insertion_cellule(){
         printf("Exemple : 2,4 \n");
 
         //Saisie de la tuile
-        printf("Entrez x , suivi de y, le tout coupé par un slash:");
+        printf("Entrez x , suivi de y, le tout coupé par une virgule:");
         scanf("%d,%d", &x, &y);
         x = x - 1;
         y = y - 1;
@@ -635,26 +635,27 @@ void insertion_cellule(){
 
     // Move all the cells in the row or column
     if (x == 6) {
-        // Move all the cells in the column
-        for (int i = 6; i > 0; i--) {
-            plateau[i][y] = plateau[i-1][y];
-        }
-    }else if(x == 0){
-        // Move all the cells in the column
+        // Move all the cells upside in the column
         for (int i = 0; i < 6; i++) {
             plateau[i][y] = plateau[i+1][y];
         }
-    }else if (y == 6) {
-        // Move all the cells in the row
+    }else if(x == 0){
+        // Move all the cells downside in the column
+        for (int i = 6; i > 0; i--) {
+            plateau[i][y] = plateau[i-1][y];
+        }
+    }else if(y == 6){
+        // Move all the cells leftside in the row
         for (int i = 0; i < 6; i++) {
             plateau[x][i] = plateau[x][i+1];
         }
-    }else if (y == 0) {
-        // Move all the cells in the row
+    }else if(y == 0){
+        // Move all the cells rightside in the row
         for (int i = 6; i > 0; i--) {
             plateau[x][i] = plateau[x][i-1];
         }
     }
+        
 
     // Insert the global_tile into the plateau
     global_tile.mobilité = true;
@@ -673,6 +674,10 @@ int main(){
     
     afficher_plateau();
     
+    insertion_cellule();
+
+    insertion_cellule();
+
     insertion_cellule();
     return 0;
 }
