@@ -132,7 +132,7 @@ void Regles()
             {
             printf("Erreur");
             system("cls");
-            call_main();
+            Menu();
             }
            break;
         
@@ -145,12 +145,12 @@ void Regles()
         default:
             printf("Erreur");
             system("cls");
-            main();
+            Menu();
             break;
     }
     } while (choixRegles != 0);
     system("cls");
-    call_main();
+    Menu();
 }
 
 // Fonction qui permet de quitter le jeu
@@ -199,10 +199,8 @@ void SauvegarderPartie()
     }
 }
 
-// Menu principal du jeu
-int main()
-{
-    
+
+void Menu(){
     int choix;
     printf(" 1 - Nouvelle Partie\n");
     printf(" 2 - Sauvegarde\n");
@@ -214,48 +212,48 @@ int main()
 
     switch(choix)
     {
-        case 1:
-            printf("\nNouvelle Partie\n");
-            nouvellepartie();
-            
-            break;
+    case 1:
+        printf("\nNouvelle Partie\n");
+        nouvellepartie();
         
-        case 2:
-            printf("\nSauvegarde\n");
-            SauvegarderPartie();
-            printf("Votre partie a été sauvegardée !\n");
-            
-            break;
-        
-        case 3:
-            printf("\nCharger une partie\n");
-            printf("Séléctionnez une partie à charger : \n");
-            ChargerPartie();
-
-            break;
-        
-        case 4:
-            printf("\nAfficher les règles / crédits\n");
-            Regles();
-            
-            break;
-        
-        case 5:
-            printf("\nQuitter\n");
-            Quitter();
-            
-            break;
-        default:
-            printf("Erreur");
-            
-            break;
-        }
+        break;
     
-    return 0;
+    case 2:
+        printf("\nSauvegarde\n");
+        SauvegarderPartie();
+        printf("Votre partie a été sauvegardée !\n");
+        
+        break;
+    
+    case 3:
+        printf("\nCharger une partie\n");
+        printf("Séléctionnez une partie à charger : \n");
+        ChargerPartie();
+
+        break;
+    
+    case 4:
+        printf("\nAfficher les règles / crédits\n");
+        Regles();
+        
+        break;
+    
+    case 5:
+        printf("\nQuitter\n");
+        Quitter();
+        
+        break;
+    default:
+        printf("Erreur");
+        
+        break;
+    }
+
 }
 
-int call_main()
+// Menu principal du jeu
+int main()
 {
-    main();
+    Menu();
     return 0;
 }
