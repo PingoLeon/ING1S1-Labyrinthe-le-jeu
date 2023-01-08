@@ -660,21 +660,82 @@ void insertion_cellule(){
 
     // Update the global_tile with the global_tile_temp
     global_tile = global_tile_temp;
-
-    //print the new board
-    afficher_plateau();
 }
 
 
-void Boucle(){
+void Boucle(nbJoueurs){
     //Tout est initialisé, c'est là la boucle de jeu pour lancer un tour et ainsi de suite
-    int tour = 1;
+    //Boucle while du jeu, répétée tant que les joueurs veulent jouer
+    //Boucle while d'un tour de joueur, répétée nbJoueurs fois, et ensuite on recommence
+    int Jeu = 1;
+    while(Jeu == 1){
+        //Boucle while d'un tour de joueur, répétée nbJoueurs fois, et ensuite on recommence
+        for(int i = 0; i < nbJoueurs; i++){
+            //Afficher le plateau
+            afficher_plateau();
 
-    //Afficher le plateau
-    afficher_plateau();
+            //Montrer la carte du gars
+            afficher_carte();
 
-    //Montrer la carte du gars
-    afficher_carte();
+            //Lui proposer d'insérer une pièce ou non
+            int choix = 0;
+            while(choix == 0){
+                printf("\n\nVoulez-vous insérer une tuile ? (1 = oui, 0 = non) : ");
+                scanf("%d", &choix);
+                if(choix == 1){
+                    insertion_cellule();
+                    printf("Voici le nouveau labyrinthe : \n\n");
+                    afficher_plateau();
+                }
+                else if(choix == 0){
+                    printf("Vous avez choisi de ne pas insérer de tuile !\n");
+                }
+                else{
+                    printf("Attention : La saisie est incorrecte ! \n");
+                }
+            }
+
+            //Lui proposer de bouger ou non
+            choix = 0;
+            while(choix == 0){
+                printf("\n\nVoulez-vous bouger ? (1 = oui, 0 = non) : ");
+                scanf("%d", &choix);
+                if(choix == 1){
+                    //Bouger le gars
+                    bouger_gars();
+                    printf("Voici le nouveau labyrinthe : \n\n");
+                    afficher_plateau();
+                }
+                else if(choix == 0){
+                    printf("Vous avez choisi de ne pas bouger !\n");
+                }
+                else{
+                    printf("Attention : La saisie est incorrecte ! \n");
+                }
+            }
+        }
+
+        //On demande si les joueurs veulent continuer
+        int choix = 0;
+        while(choix == 0){
+            printf("\n\nUn tour est fini, voulez vous continuer ? (1 = oui, 0 = non) :");
+            scanf("%d", &choix);
+            if(choix == 1){
+                printf("Vous avez choisi de continuer !\n");
+            }
+            else if(choix == 0){
+                printf("Vous avez choisi de ne pas continuer ! Retour au menu principal !\n");
+                Jeu = 0;
+            }
+            else{
+                printf("Attention : La saisie est incorrecte ! \n");
+            }
+        }
+    }
+
+    //On retourne au menu principal
+    MenuPrincipal();
+
 }
 
 // Structure qui permet de créer un pion
@@ -763,6 +824,7 @@ void init_pions()
         printf("Pion 3 : %c\n", pion3.symbole);
         printf("Pion 4 : %c\n", pion4.symbole);
     }
+
 
 } 
 
