@@ -23,7 +23,7 @@ void init_pions()
     int nbJoueurs;
     printf("Combien de joueurs ? (2 à 4) : ");
     scanf("%d", &nbJoueurs);
-    if (nbJoueurs < 2 || nbJoueurs > 4)
+    if (nbJoueurs < 2 && nbJoueurs > 4)
     {
         printf("Erreur : le nombre de joueurs doit être compris entre 2 et 4.\n");
     }
