@@ -811,6 +811,12 @@ void Boucle(){
                     break;
                 
             }
+
+            carteDeFace();
+
+            carteDeDos();
+
+            
             //Lui proposer d'insérer une pièce ou non
             int choix = 0;
             while(choix == 0){
@@ -970,7 +976,7 @@ void carteDeFace() {
         for (int j = 0; j < 10; j++) 
         {
 
-        printf("\033[1;37m%c\033[0m ", map[i][j]);// pour afficher la carte en blanc
+        printf("%c ", map[i][j]);// pour afficher la carte en blanc
         //\033[1;37mTexte en blanc\033[0m     blanc
 
         if ( i==5 && j==4)
@@ -978,7 +984,7 @@ void carteDeFace() {
         srand(time(0));
         int k = rand() % 24;
 
-        printf("\033[33m%c\033[33m ", tresors[k]);// pour afficher le trésor en jaune
+        printf("%c ", tresors[k]);// pour afficher le trésor en jaune
         //\033[33mTexte en jaune\033[33m       jaune
         }
        }
@@ -1003,7 +1009,7 @@ void carteDeDos (){
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
 
-                printf("\033[0;37m%c\033[0m ", map[i][j]); // en gris
+                printf("%c ", map[i][j]); // en gris
 
             }
             printf("\n"); 
