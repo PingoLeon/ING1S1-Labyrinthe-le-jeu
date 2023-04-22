@@ -40,3 +40,6 @@ void sauvegarderPartie()
         fclose(fichier);
     }
 }
+
+// J'aime mes frites 
+
